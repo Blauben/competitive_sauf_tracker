@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sauf_tracker/db_opt.dart';
+import 'package:sqflite/sqflite.dart';
 
-void main() {
+late final Future<Database> database;
+
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    database = openDatabase(
+        join(await getDatabasesPath(), 'drinks.db'),
+      onCreate: (db, version) {
+          return db.execute(
+            DBOpt.createStatement()
+          );
+      },
+      version: 1,
+    );
   runApp(const MyApp());
 }
 
@@ -48,7 +63,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _counter = 0;
+  //int _counter = 0;
+  String test() {
+    String drinks = "No Data";
+    DBOpt.retrieveFrom(database, "drinks").then((value) {
+      drinks = value.toString();
+    });
+    return drinks;
+  }
 
   // void _incrementCounter() {
   //   setState(() {
@@ -116,6 +138,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      body: Text(test()),
     );
   }
 }
