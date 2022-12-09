@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sauf_tracker/db_opt.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
 
-void main() {
-  runApp(const MyApp());
+late final Future<Database> database;
+
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    database = openDatabase(
+        join(await getDatabasesPath(), "suff.db"),
+      onCreate: (db, version) {
+          return db.execute(
+            DBOpt.createStatement()
+          );
+      },
+      version: 1,
+    );
+    runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sauf App',
+      title: "Sauf App",
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,7 +40,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(title: 'Competitive Sauf Tracker!'),
+      home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }
 }
@@ -49,7 +64,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _counter = 0;
+  //int _counter = 0;
 
   // void _incrementCounter() {
   //   setState(() {
@@ -115,8 +130,9 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("ASDF"),
+        title: Text(widget.title),
       ),
+      body: const Text("Hello World!"),
       bottomNavigationBar: NavBar(),
     );
   }
