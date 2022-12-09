@@ -8,7 +8,7 @@ late final Future<Database> database;
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     database = openDatabase(
-        join(await getDatabasesPath(), 'suff.db'),
+        join(await getDatabasesPath(), "suff.db"),
       onCreate: (db, version) {
           return db.execute(
             DBOpt.createStatement()
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sauf App',
+      title: "Sauf App",
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(title: 'Competitive Sauf Tracker'),
+      home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }
 }
