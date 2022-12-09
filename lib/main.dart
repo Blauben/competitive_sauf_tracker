@@ -8,7 +8,7 @@ late final Future<Database> database;
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     database = openDatabase(
-        join(await getDatabasesPath(), 'drinks.db'),
+        join(await getDatabasesPath(), 'suff.db'),
       onCreate: (db, version) {
           return db.execute(
             DBOpt.createStatement()
@@ -16,7 +16,7 @@ void main() async {
       },
       version: 1,
     );
-  runApp(const MyApp());
+    runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -64,13 +64,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   //int _counter = 0;
-  String test() {
-    String drinks = "No Data";
-    DBOpt.retrieveFrom(database, "drinks").then((value) {
-      drinks = value.toString();
-    });
-    return drinks;
-  }
 
   // void _incrementCounter() {
   //   setState(() {
@@ -138,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Text(test()),
+      body: const Text("Hello World!"),
     );
   }
 }
