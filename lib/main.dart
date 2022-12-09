@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sauf_tracker/db_opt.dart';
+import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
 
@@ -64,6 +65,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+  List<Widget> bodys = [const DrinkSelectorBody()];
+
+  int selectedIndex = 0;
+
+
   //int _counter = 0;
 
   // void _incrementCounter() {
@@ -132,8 +139,8 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Text("Hello World!"),
-      bottomNavigationBar: NavBar(),
+      body: bodys[selectedIndex],
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
