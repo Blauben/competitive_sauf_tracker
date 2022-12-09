@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(title: 'Competitive Sauf Tracker'),
+      home: const MainScreen(title: 'Competitive Sauf Tracker!'),
     );
   }
 }
@@ -114,8 +115,9 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("ASDF"),
       ),
+      bottomNavigationBar: NavBar(),
     );
   }
 }
