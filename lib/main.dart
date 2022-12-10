@@ -10,13 +10,13 @@ late final Future<Database> database;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  database = openDatabase(
+  /*database = openDatabase(
     join(await getDatabasesPath(), "suff.db"),
     onCreate: (db, version) {
       return db.execute(DBOpt.createStatement());
     },
     version: 1,
-  );
+  );*/
   runApp(const MyApp());
 }
 
@@ -81,8 +81,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = <Widget>[
     const DrinkSelector(),
-    const Test(),
-    const Test()
+    const _Test(),
+    const _Test()
   ];
 
   @override
@@ -162,8 +162,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class Test extends StatelessWidget {
-  const Test({super.key});
+class _Test extends StatelessWidget {
+  const _Test({super.key});
 
   @override
   Widget build(BuildContext context) {
