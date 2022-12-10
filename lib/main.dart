@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sauf_tracker/db_opt.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
+import 'package:sqflite/sqflite.dart';
 
 late final Future<Database> database;
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    database = openDatabase(
-        join(await getDatabasesPath(), "suff.db"),
-      onCreate: (db, version) {
-          return db.execute(
-            DBOpt.createStatement()
-          );
-      },
-      version: 1,
-    );
-    runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  database = openDatabase(
+    join(await getDatabasesPath(), "suff.db"),
+    onCreate: (db, version) {
+      DBOpt.createDatabase(db);
+    },
+    version: 1,
+  );
+  //deleteDatabase("${await getDatabasesPath()}/suff.db");
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
