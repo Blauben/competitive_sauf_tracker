@@ -4,7 +4,6 @@ import 'package:sauf_tracker/db_opt.dart';
 import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector.dart';
-import 'package:sqflite/sqflite.dart';
 
 late final Future<Database> database;
 
