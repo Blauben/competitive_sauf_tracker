@@ -3,6 +3,8 @@ import 'package:path/path.dart';
 import 'package:sauf_tracker/db_opt.dart';
 import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector.dart';
+import 'package:sqflite/sqflite.dart';
 
 late final Future<Database> database;
 
@@ -11,11 +13,10 @@ void main() async {
   database = openDatabase(
     join(await getDatabasesPath(), "suff.db"),
     onCreate: (db, version) {
-      DBOpt.createDatabase(db);
+      return db.execute(DBOpt.createStatement());
     },
     version: 1,
   );
-  //deleteDatabase("${await getDatabasesPath()}/suff.db");
   runApp(const MyApp());
 }
 
@@ -76,6 +77,14 @@ class _MainScreenState extends State<MainScreen> {
   //   });
   // }
 
+  int currentIndex = 0;
+
+  final List<Widget> _pages = <Widget>[
+    const DrinkSelector(),
+    const Test(),
+    const Test()
+  ];
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -128,11 +137,36 @@ class _MainScreenState extends State<MainScreen> {
     // );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: const Text("Hello World!"),
-      bottomNavigationBar: NavBar(),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: _pages[currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              label: "Drinks",
+              icon: Icon(Icons.sports_bar),
+            ),
+            BottomNavigationBarItem(
+                label: "Scoreboard", icon: Icon(Icons.leaderboard)),
+            BottomNavigationBarItem(
+                label: "Statistics", icon: Icon(Icons.analytics)),
+          ],
+          onTap: (int index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          currentIndex: currentIndex,
+        ));
+  }
+}
+
+class Test extends StatelessWidget {
+  const Test({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Text("Test Page"));
   }
 }
