@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DBOpt {
+class DBOptService {
   static Future<Database> database() async {
     WidgetsFlutterBinding.ensureInitialized();
     return openDatabase(
       join(await getDatabasesPath(), "suff.db"),
       onCreate: (db, version) {
-        DBOpt._createDatabase(db);
+        DBOptService._createDatabase(db);
       },
       version: 1,
     );
@@ -31,6 +31,7 @@ class DBOpt {
                 name varchar(30) primary key,
                 percentage integer,
                 volume integer,
+                icon varchar(30)
                 check(percentage > 0 and percentage <= 100)
                 );
                 """,
@@ -40,7 +41,7 @@ class DBOpt {
             decay_rate float,
             alc_conversion float,            
             points integer,
-            check(user_id >= 0 and age >= 16)
+            check(user_id >= 0)
             );
             """,
       """CREATE VIEW scoreboard AS

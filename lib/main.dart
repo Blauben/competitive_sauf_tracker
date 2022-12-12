@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
-import 'package:sauf_tracker/util_features/offlineDatabase/domain/services/db_opt.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
-late final Future<Database> database;
-
 void main() async {
-  database = DBOpt.database();
   runApp(const MyApp());
 }
 
@@ -75,7 +70,6 @@ class _MainScreenState extends State<MainScreen> {
     const DrinkSelectorBody(),
     const Test(),
     const Test(),
-    const Test()
   ];
 
   @override
