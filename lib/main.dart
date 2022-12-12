@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/services/db_opt.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 late final Future<Database> database;
 
@@ -73,6 +74,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = <Widget>[
     const DrinkSelectorBody(),
     const _Test(),
+    const _Test(),
     const _Test()
   ];
 
@@ -131,6 +133,7 @@ class _MainScreenState extends State<MainScreen> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
+        drawer: const SettingsDrawer(),
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const [
