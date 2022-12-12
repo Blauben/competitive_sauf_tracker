@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/drink_selector/beer/body/beer_selector.dart';
 import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector_item.dart';
+import 'package:sauf_tracker/main_features/scaffold/screens/main_scaffold.dart';
 import 'package:sauf_tracker/util_features/custom_icons/domain/model/custom_icons.dart';
+
+import '../../../main.dart';
 
 
 
@@ -17,17 +20,24 @@ class _DrinkSelectorBodyState extends State<DrinkSelectorBody> {
   late List<Widget> drinkSelectorBodies;
   @override
   void initState() {
-    drinkSelectorBodies = [_MainDrinkSelector(showBody: _showBody), const BeerSelectorBody()];
+    drinkSelectorBodies = [_MainDrinkSelector(showBody: _showBody), const BeerSelectorBody(), Test(), Test(), Test(), Test(), Test(), Test()];
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
-    return drinkSelectorBodies[currentIndex];
+    return WillPopScope(
+      child: drinkSelectorBodies[currentIndex],
+      onWillPop: () async{
+        setState(() {
+          currentIndex = 0;
+        });
+        return false;
+      },
+    );
   }
 
   void _showBody(int index) {
-    print("Show body");
     setState(() {
       currentIndex = index;
     });
@@ -51,7 +61,7 @@ class _MainDrinkSelector extends StatelessWidget {
 
         _buildCardItem(title: "Whisky", icon: const Icon(CustomIcons.whiskey, size: 90,), index: 3),
 
-        _buildCardItem(title: "Shot", icon: const Icon(Icons.liquor, size: 100,), index: 4),
+        _buildCardItem(title: "Shot", icon: const Icon(CustomIcons.tequila, size: 90,), index: 4),
 
         _buildCardItem(title: "Cocktail", icon: const Icon(CustomIcons.cocktail, size: 100,), index: 5)
 

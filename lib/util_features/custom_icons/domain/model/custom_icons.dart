@@ -9,4 +9,5 @@ class CustomIcons {
   static const IconData digg = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData whiskey = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cocktail = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData tequila = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

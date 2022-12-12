@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/drink_selector_item.dart';
+import '../../../drink_selector/widgets/drink_selector_item.dart';
+
+
 
 class BeerSelectorBody extends StatelessWidget {
   const BeerSelectorBody({Key? key}) : super(key: key);
@@ -13,7 +15,7 @@ class BeerSelectorBody extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(left: 15, right: 15),
           height: 200,
-          child: DrinkSelectorItem(title: "Klein (0,33L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {},),
+          child: DrinkSelectorItem(title: "Klein (0,33L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {Navigator.pop(context)},),
 
         ),
         Container(

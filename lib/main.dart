@@ -69,11 +69,12 @@ class _MainScreenState extends State<MainScreen> {
   // }
 
   int currentIndex = 0;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   final List<Widget> _pages = <Widget>[
     const DrinkSelectorBody(),
-    const _Test(),
-    const _Test()
+    const Test(),
+    const Test()
   ];
 
   @override
@@ -130,9 +131,12 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          automaticallyImplyLeading: false,
+
+
         ),
-        body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
+
           items: const [
             BottomNavigationBarItem(
               label: "Drinks",
@@ -143,19 +147,23 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
                 label: "Statistics", icon: Icon(Icons.analytics)),
           ],
+
           onTap: (int index) {
             setState(() {
               currentIndex = index;
             });
           },
           currentIndex: currentIndex,
-        ));
+        ),
+
+      body: _pages[currentIndex]
+    );
   }
 }
 
 //Test Widget: TODO remove after testing
-class _Test extends StatelessWidget {
-  const _Test({super.key});
+class Test extends StatelessWidget {
+  const Test({super.key});
 
   @override
   Widget build(BuildContext context) {
