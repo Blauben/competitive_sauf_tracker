@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sauf_tracker/main_features/drink_selector/beer/body/beer_selector.dart';
 import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector_item.dart';
 import 'package:sauf_tracker/main_features/scaffold/screens/main_scaffold.dart';
 import 'package:sauf_tracker/util_features/custom_icons/domain/model/custom_icons.dart';
 
 import '../../../main.dart';
+import '../selectors/beer/body/beer_selector.dart';
+
 
 
 
@@ -26,14 +27,22 @@ class _DrinkSelectorBodyState extends State<DrinkSelectorBody> {
   
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: drinkSelectorBodies[currentIndex],
-      onWillPop: () async{
-        setState(() {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Competetive sauf tracker"),
+        leading: currentIndex == 0 ? null : IconButton(onPressed: () {setState(() {
           currentIndex = 0;
-        });
-        return false;
-      },
+        });}, icon: Icon(Icons.arrow_back)),
+      ),
+      body: WillPopScope(
+        child: drinkSelectorBodies[currentIndex],
+        onWillPop: () async{
+          setState(() {
+            currentIndex = 0;
+          });
+          return false;
+        },
+      ),
     );
   }
 

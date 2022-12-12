@@ -130,9 +130,6 @@ class _MainScreenState extends State<MainScreen> {
     // );
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
         drawer: const SettingsDrawer(),
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
