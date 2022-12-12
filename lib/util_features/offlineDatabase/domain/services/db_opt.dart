@@ -60,21 +60,28 @@ class DBOpt {
   }
 
   static Future<List<Map<String, dynamic>>> retrieveFrom(
-      Future<Database> database, String table) async {
+      Future<Database> database, String table,
+      {Map<String, dynamic>? condition}) async {
     final db = await database;
-    return await db.query(table);
+    if (condition == null) {
+      return await db.query(table);
+    }
+    return await db.query(table,
+        where: _buildWhereCondition(condition.keys),
+        whereArgs: condition.values.toList());
   }
 
   static void deleteFrom(Future<Database> database, table,
-      List<Map<String, dynamic>>? rows) async {
+      {List<Map<String, dynamic>>? rows}) async {
     final db = await database;
     if (rows == null) {
       db.delete(table);
       return;
     }
     for (Map<String, dynamic> tuple in rows) {
-      String? where = _buildWhereCondition(tuple.keys);
-      await db.delete(table, where: where, whereArgs: tuple.values.toList());
+      await db.delete(table,
+          where: _buildWhereCondition(tuple.keys),
+          whereArgs: tuple.values.toList());
     }
   }
 
