@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class DrinkSelectorItem extends StatelessWidget {
   String title;
   Icon icon;
-  Function? onPressed;
-  DrinkSelectorItem({Key? key, required this.title, required this.icon, this.onPressed}) : super(key: key);
+  void Function() onPressed;
+  DrinkSelectorItem({Key? key, required this.title, required this.icon, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class DrinkSelectorItem extends StatelessWidget {
       shadowColor: Colors.teal,
       elevation: 3,
       child: InkWell(
-        onTap: () => onPressed,
+        onTap: onPressed,
         child: Container(
           margin: EdgeInsets.only(top: 30),
           child: Column(
