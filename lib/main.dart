@@ -1,21 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
-import 'package:sqflite/sqflite.dart';
 
-import 'util_features/offlineDatabase/domain/services/db_opt.dart';
+import 'package:flutter/material.dart';
+import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
+import 'package:sauf_tracker/util_features/offlineDatabase/domain/services/db_opt.dart';
+import 'package:sqflite/sqflite.dart';
 
 late final Future<Database> database;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  database = openDatabase(
-    join(await getDatabasesPath(), "suff.db"),
-    onCreate: (db, version) {
-      DBOpt.createDatabase(db);
-    },
-    version: 1,
-  );
+  database = DBOpt.database();
   runApp(const MyApp());
 }
 

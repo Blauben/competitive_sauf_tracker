@@ -1,7 +1,25 @@
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBOpt {
-  static void createDatabase(Database db) {
+  static Future<Database> database() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    return openDatabase(
+      join(await getDatabasesPath(), "suff.db"),
+      onCreate: (db, version) {
+        DBOpt._createDatabase(db);
+      },
+      version: 1,
+    );
+  }
+
+  static Future<void> resetDatabase(String dbName) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    deleteDatabase(join(await getDatabasesPath(), dbName));
+  }
+
+  static void _createDatabase(Database db) {
     for (String query in _createStatement()) {
       db.execute(query);
     }
@@ -22,11 +40,12 @@ class DBOpt {
             weight float,
             gender char,
             age integer,
+            points integer,
             check(user_id >= 0 and age >= 16)
             );
             """,
       """CREATE VIEW scoreboard AS
-            SELECT RANK() OVER(ORDER BY u.points desc), u.name, u.points
+            SELECT RANK() OVER(ORDER BY u.points desc) as rank, u.name, u.points
             FROM users AS u;
             """
     ];
