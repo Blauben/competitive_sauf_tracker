@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:sauf_tracker/db_opt.dart';
-import 'package:sauf_tracker/main_features/navigationbar/widgets/navbar.dart';
+import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector.dart';
+
+import 'util_features/offlineDatabase/domain/services/db_opt.dart';
 
 late final Future<Database> database;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  /*database = openDatabase(
+  database = openDatabase(
     join(await getDatabasesPath(), "suff.db"),
     onCreate: (db, version) {
-      return db.execute(DBOpt.createStatement());
+      DBOpt.createDatabase(db);
     },
     version: 1,
-  );*/
+  );
   runApp(const MyApp());
 }
 
@@ -79,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
 
   final List<Widget> _pages = <Widget>[
-    const DrinkSelector(),
+    const DrinkSelectorBody(),
     const _Test(),
     const _Test()
   ];
@@ -161,11 +161,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
+//Test Widget: TODO remove after testing
 class _Test extends StatelessWidget {
   const _Test({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Text("Test Page"));
+    return const Scaffold(body: Text("Yet to be built"));
   }
 }
