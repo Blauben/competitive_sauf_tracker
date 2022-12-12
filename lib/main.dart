@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/services/db_opt.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 late final Future<Database> database;
 
@@ -69,10 +70,10 @@ class _MainScreenState extends State<MainScreen> {
   // }
 
   int currentIndex = 0;
-  final navigatorKey = GlobalKey<NavigatorState>();
 
   final List<Widget> _pages = <Widget>[
     const DrinkSelectorBody(),
+    const Test(),
     const Test(),
     const Test()
   ];
@@ -131,12 +132,10 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          automaticallyImplyLeading: false,
-
-
         ),
+        drawer: const SettingsDrawer(),
+        body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
-
           items: const [
             BottomNavigationBarItem(
               label: "Drinks",
@@ -147,17 +146,13 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
                 label: "Statistics", icon: Icon(Icons.analytics)),
           ],
-
           onTap: (int index) {
             setState(() {
               currentIndex = index;
             });
           },
           currentIndex: currentIndex,
-        ),
-
-      body: _pages[currentIndex]
-    );
+        ));
   }
 }
 
