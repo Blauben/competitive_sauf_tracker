@@ -37,9 +37,8 @@ class DBOpt {
       """CREATE TABLE users (
             user_id integer primary key,
             name varchar(30) not null,
-            weight float,
-            gender char,
-            age integer,
+            decay_rate float,
+            alc_conversion float,            
             points integer,
             check(user_id >= 0 and age >= 16)
             );
