@@ -156,6 +156,7 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Text("Yet to be built"));
+    return Scaffold(
+        body: Image.asset("images/Augustiner_Helles.jpg"));
   }
 }

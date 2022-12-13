@@ -28,26 +28,37 @@ class DBOptService {
   static List<String> _createStatement() {
     return [
       """CREATE TABLE drinks (
-                name varchar(30) primary key,
-                percentage integer,
-                volume integer,
-                icon varchar(30)
-                check(percentage > 0 and percentage <= 100)
+                id integer,
+                name varchar(30) not null,
+                percentage integer not null,
+                volume integer not null,
+                icon varchar(30) null,
+                iconType varchar(7) null,
+                primary key (id, name),
+                check(percentage > 0 and percentage <= 100 and id >= 0),
+                check(iconType IS null or iconType = 'image' or iconType = 'flutter')
                 );
                 """,
       """CREATE TABLE users (
             user_id integer primary key,
             name varchar(30) not null,
-            decay_rate float,
+            decay_rate float noy null,
             alc_conversion float,            
             points integer,
             check(user_id >= 0)
             );
             """,
       """CREATE VIEW scoreboard AS
-            SELECT RANK() OVER(ORDER BY u.points desc) as rank, u.name, u.points
+            SELECT RANK() OVER(ORDER BY u.points desc) as _rank, u.name, u.points
             FROM users AS u;
-            """
+            """,
+      """CREATE TABLE consumed (  
+            drink_id integer references drinks on delete set null on update cascade,     
+            drink_name varchar(30) references drinks on delete set null on update cascade,     
+            begin timestamp,     
+            end timestamp,    
+            check(end > begin)
+)"""
     ];
   }
 

@@ -99,3 +99,6 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: fonts/CustomIcons.ttf
+
+  assets:
+    - images/Augustiner_Helles.jpg
