@@ -4,7 +4,12 @@ import '../models/drinks.dart';
 import '../services/db_opt.dart';
 
 class DBOptRepo {
-  static final Future<Database> _db = DBOptService.database();
+  static Future<Database> _db = DBOptService.database();
+
+  static void resetDatabase() {
+    DBOptService.resetDatabase("suff.db");
+    _db = DBOptService.database();
+  }
 
   static Future<List<Drink>> fetchDrinks() async {
     var maps = await DBOptService.retrieveFrom(_db, "drinks");
@@ -21,5 +26,9 @@ class DBOptRepo {
       "end": end.toString()
     };
     DBOptService.insertInto(_db, "consumed", [tuple]);
+  }
+
+  static void insertDrink(Drink drink) {
+    DBOptService.insertInto(_db, "drinks", [drink.toMap()]);
   }
 }

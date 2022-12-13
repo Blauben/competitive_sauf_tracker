@@ -20,7 +20,7 @@ class DBOptService {
   }
 
   static void _createDatabase(Database db) {
-    for (String query in _createStatement()) {
+    for (String query in _createStatement() + _insertStatement()) {
       db.execute(query);
     }
   }
@@ -32,6 +32,7 @@ class DBOptService {
                 name varchar(30) not null,
                 percentage integer not null,
                 volume integer not null,
+                category integer references category,
                 icon varchar(30) null,
                 iconType varchar(7) null,
                 primary key (id, name),
@@ -58,8 +59,16 @@ class DBOptService {
             begin timestamp,     
             end timestamp,    
             check(end > begin)
-)"""
+      )""",
+      """CREATE TABLE drink_category (
+        category_id integer primary key,
+        name varchar(30)
+      )"""
     ];
+  }
+
+  static List<String> _insertStatement() {
+    return ["""INSERT INTO drink_category VALUES(1,'Bier'),(2,'Wein')"""];
   }
 
   static Future<void> insertInto(
