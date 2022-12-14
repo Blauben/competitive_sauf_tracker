@@ -5,7 +5,6 @@ import 'package:sauf_tracker/util_features/custom_icons/domain/model/custom_icon
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/drinks.dart';
 
 import '../../../main.dart';
-import '../../selectors/beer/body/beer_selector.dart';
 
 class DrinkCategorySelectorBody extends StatefulWidget {
   const DrinkCategorySelectorBody({Key? key}) : super(key: key);
@@ -35,14 +34,22 @@ class _DrinkCategorySelectorBodyState extends State<DrinkCategorySelectorBody> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: drinkSelectorBodies[currentIndex],
-      onWillPop: () async {
-        setState(() {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Competetive sauf tracker"),
+        leading: currentIndex == 0 ? null : IconButton(onPressed: () {setState(() {
           currentIndex = 0;
-        });
-        return false;
-      },
+        });}, icon: Icon(Icons.arrow_back)),
+      ),
+      body: WillPopScope(
+        child: drinkSelectorBodies[currentIndex],
+        onWillPop: () async{
+          setState(() {
+            currentIndex = 0;
+          });
+          return false;
+        },
+      ),
     );
   }
 
