@@ -5,19 +5,18 @@ import '../../offlineDatabase/domain/models/drinks.dart';
 class Cache {
   static List<Drink>? _drinks;
 
-  static List<Drink> fetchDrinks() {
+  static Future<List<Drink>> fetchDrinks() async {
     if (_drinks != null) {
       return _drinks!;
     }
-    _fetchFromDB();
-    return _drinks!;
+    return await _fetchFromDB();
   }
 
   static void reloadCache() {
     _fetchFromDB();
   }
 
-  static void _fetchFromDB() async {
-    _drinks = await DBOptRepo.fetchDrinks();
+  static Future<List<Drink>> _fetchFromDB() async {
+    return _drinks = await DBOptRepo.fetchDrinks();
   }
 }
