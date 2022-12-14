@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
+import 'package:sauf_tracker/main_features/drink_selector/body/drink_category_selector.dart';
 
 import '../../../main.dart';
 /*
@@ -28,7 +28,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 
   final List<Widget> _pages = <Widget>[
-    const DrinkSelectorBody(),
+    const DrinkCategorySelectorBody(),
     const Test(),
     const Test()
   ];

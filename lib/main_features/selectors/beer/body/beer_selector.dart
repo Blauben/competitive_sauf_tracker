@@ -15,20 +15,20 @@ class BeerSelectorBody extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(left: 15, right: 15),
           height: 200,
-          child: DrinkSelectorItem(title: "Klein (0,33L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {Navigator.pop(context)},),
+          child: DrinkCategorySelectorItem(title: "Klein (0,33L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {Navigator.pop(context)},),
 
         ),
         Container(
           margin: EdgeInsets.only(left: 15, right: 15),
           height: 200,
-          child: DrinkSelectorItem(title: "Halbe (0,5L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {},),
+          child: DrinkCategorySelectorItem(title: "Halbe (0,5L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {},),
 
         ),
 
         Container(
           margin: EdgeInsets.only(left: 15, right: 15),
           height: 200,
-          child: DrinkSelectorItem(title: "Mass (1L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {},),
+          child: DrinkCategorySelectorItem(title: "Mass (1L)", icon: Icon(Icons.sports_bar, size: 100), onPressed: () => {},),
 
         ),
       ],

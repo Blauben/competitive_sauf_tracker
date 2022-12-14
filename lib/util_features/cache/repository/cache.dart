@@ -9,7 +9,12 @@ class Cache {
     if (_drinks != null) {
       return _drinks!;
     }
-    return await _fetchFromDB();
+    DBOptRepo.insertDrink(Drink(id: 1, name: "name", percentage: 12, volume: 12, category: 1));
+
+    _drinks =  await _fetchFromDB();
+
+
+    return _drinks!;
   }
 
   static void reloadCache() {

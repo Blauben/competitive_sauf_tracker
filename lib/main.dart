@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
+import 'package:sauf_tracker/main_features/drink_selector/body/drink_category_selector.dart';
+import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
+  DBOptRepo.resetDatabase();
   runApp(const MyApp());
 }
 
@@ -67,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
 
   final List<Widget> _pages = <Widget>[
-    const DrinkSelectorBody(),
+    const DrinkCategorySelectorBody(),
     const Test(),
     const Test(),
   ];

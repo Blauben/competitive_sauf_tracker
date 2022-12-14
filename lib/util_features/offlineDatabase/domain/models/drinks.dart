@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+enum DrinkCategory {
+  beer,wine
+}
+
+
 class Drink {
   int id;
   String name;
@@ -36,7 +41,7 @@ class Drink {
     switch (json["iconType"]) {
       case "flutter":
         drink.flutterIcon =
-            Icon(IconData(json["icon"], fontFamily: 'MaterialIcons'));
+            Icon(IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'));
         break;
       case "image":
         drink.image = Image.asset(json["icon"]);
@@ -58,7 +63,7 @@ class Drink {
     switch (iconType) {
       case "flutter":
         IconData? data = flutterIcon!.icon;
-        map["icon"] = data != null ? data.codePoint : 0xf04b6;
+        map["icon"] =( data != null ? data.codePoint : 0xf04b6).toString();
         break;
       case "image":
         map["icon"] = imagePath!;
