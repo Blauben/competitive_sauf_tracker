@@ -28,14 +28,13 @@ class DBOptService {
   static List<String> _createStatement() {
     return [
       """CREATE TABLE drinks (
-                id integer,
+                id integer primary key,
                 name varchar(30) not null,
                 percentage integer not null,
                 volume integer not null,
-                category integer references category,
+                category_id integer references drink_category,
                 icon varchar(30) null,
                 iconType varchar(7) null,
-                primary key (id, name),
                 check(percentage > 0 and percentage <= 100 and id >= 0),
                 check(iconType IS null or iconType = 'image' or iconType = 'flutter')
                 );
@@ -43,7 +42,7 @@ class DBOptService {
       """CREATE TABLE users (
             user_id integer primary key,
             name varchar(30) not null,
-            decay_rate float noy null,
+            decay_rate float not null,
             alc_conversion float,            
             points integer,
             check(user_id >= 0)
@@ -54,36 +53,61 @@ class DBOptService {
             FROM users AS u;
             """,
       """CREATE TABLE consumed (  
-            drink_id integer references drinks on delete set null on update cascade,     
-            drink_name varchar(30) references drinks on delete set null on update cascade,     
-            begin timestamp,     
+            drink_id integer references drinks on delete set null on update cascade,        
+            begin timestamp not null,     
             end timestamp,    
             check(end > begin)
-      )""",
+      );
+      """,
       """CREATE TABLE drink_category (
         category_id integer primary key,
-        name varchar(30)
-      )"""
+        name varchar(30),
+        maxDuration integer default 60
+      );
+      """,
+      """CREATE VIEW activeDrinks AS
+    SELECT 
+        c.drink_id,
+        c.begin,
+        strftime('%s', c.begin) + dc.maxDuration * 60 AS maxEndUnixTime
+    FROM
+        consumed c,
+        drinks d,
+        drink_category dc
+    WHERE
+        c.drink_id = d.id
+            AND d.category_id = dc.category_id
+            AND c.end IS NULL;
+    """
     ];
   }
 
   static List<String> _insertStatement() {
-    return ["""INSERT INTO drink_category VALUES(1,'Bier'),(2,'Wein')"""];
+    return [
+      """INSERT INTO drink_category VALUES(1,'Bier',30),(2,'Wein',60);""",
+      """INSERT INTO drinks values(1,'Augustiner',5,500,1,NULL,NULL),(2,'Rose',12,300,2,NULL,NULL),(3,'Gluehwein',10,300,2,NULL,NULL);""",
+      """INSERT INTO consumed values(1,'2022-12-23 03:00','2022-12-23 03:30'),(2,'2022-12-23 03:30',NULL),(3,datetime('now'),NULL);"""
+    ];
   }
 
   static Future<void> insertInto(
-      Future<Database> database, table, List<Map<String, dynamic>> rows) async {
-    final db = await database;
+      Database db, table, List<Map<String, dynamic>> rows) async {
     for (Map<String, dynamic> tuple in rows) {
       await db.insert(table, tuple,
           conflictAlgorithm: ConflictAlgorithm.rollback);
     }
   }
 
+  static void updateIn(Database db, String table,
+      Map<String, dynamic> condition, Map<String, dynamic> updatedValues) {
+    db.update(table, updatedValues,
+        where: _buildWhereCondition(condition.keys),
+        whereArgs: condition.values.toList());
+  }
+
   static Future<List<Map<String, dynamic>>> retrieveFrom(
-      Future<Database> database, String table,
+      Database db, String table,
       {Map<String, dynamic>? condition}) async {
-    final db = await database;
     if (condition == null) {
       return await db.query(table);
     }
@@ -92,9 +116,8 @@ class DBOptService {
         whereArgs: condition.values.toList());
   }
 
-  static void deleteFrom(Future<Database> database, table,
+  static void deleteFrom(Database db, table,
       {List<Map<String, dynamic>>? rows}) async {
-    final db = await database;
     if (rows == null) {
       db.delete(table);
       return;
@@ -112,5 +135,12 @@ class DBOptService {
       where += "$key = ? and ";
     }
     return where == "" ? null : where.substring(0, where.length - 5);
+  }
+
+  static Future<List<Map<String, dynamic>>> query(
+      {required Database db,
+      required String query,
+      List<dynamic>? args}) async {
+    return db.rawQuery(query, args);
   }
 }

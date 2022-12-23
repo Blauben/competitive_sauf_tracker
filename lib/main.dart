@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sauf_tracker/main_features/drink_selector/body/drink_category_selector.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
+import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
