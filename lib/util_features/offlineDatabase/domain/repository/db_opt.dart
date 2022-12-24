@@ -5,7 +5,6 @@ import '../models/drink.dart';
 import '../services/db_opt.dart';
 
 class DBOptRepo {
-
   static Future<Database> _db = DBOptService.database();
 
   static Future<void> resetDatabase() async {
@@ -30,7 +29,8 @@ class DBOptRepo {
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
-    DBOptService.updateIn(await _db, "consumed", {"drink_id":drink.id}, {"begin":DateTime.now().toIso8601String()});
+    DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
+        {"begin": DateTime.now().toIso8601String()});
   }
 
   static void insertDrink(Drink drink) async {
@@ -46,6 +46,6 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
 
   static Future<List<PendingDrink>> fetchPendingDrinks() async {
     var jsonList = await DBOptService.retrieveFrom(await _db, "activeDrinks");
-    return PendingDrink.fromJsonList(jsonList);
+    return await PendingDrink.fromJsonList(jsonList);
   }
 }
