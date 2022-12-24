@@ -22,7 +22,7 @@ class _DrinkCategorySelectorBodyState extends State<DrinkCategorySelectorBody> {
     drinkSelectorBodies = [
       _MainDrinkSelector(showBody: _showBody),
       const DrinkSelectorBody(drinkCategory: DrinkCategory.beer),
-      const Test(),
+      const DrinkSelectorBody(drinkCategory: DrinkCategory.wine),
       const Test(),
       const Test(),
       const Test(),
@@ -36,7 +36,7 @@ class _DrinkCategorySelectorBodyState extends State<DrinkCategorySelectorBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Competetive sauf tracker"),
+        title: const Text("Competitive sauf tracker"),
         leading: currentIndex == 0 ? null : IconButton(onPressed: () {setState(() {
           currentIndex = 0;
         });}, icon: Icon(Icons.arrow_back)),

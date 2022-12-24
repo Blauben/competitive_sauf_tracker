@@ -41,6 +41,89 @@ class DrinkSelectorItem extends StatefulWidget {
 class _DrinkSelectorItemState extends State<DrinkSelectorItem> {
   @override
   Widget build(BuildContext context) {
-    return Text(widget.drink.name, style: TextStyle(fontSize: 100),);
+    return Container(
+      margin: const EdgeInsets.only(left: 15, right: 15),
+      child: Card(
+          shadowColor: Colors.teal,
+          elevation: 3,
+          child: InkWell(
+            onTap: ()  {
+              showDialog(
+                context: context,
+                builder: (c) => _DrinkAddAlertDialog(),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: Column(
+
+                children: [
+                  Icon(widget.drink.flutterIcon == null ? Icons.question_mark : widget.drink.flutterIcon!.icon, size: 90),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Spacer(),
+                      Column(
+                        children: [
+                          Text(widget.drink.name, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          Text("${(widget.drink.volume/1000).toStringAsPrecision(1) }L (${widget.drink.percentage}%)", style: const TextStyle(fontSize: 15),),
+                        ],
+                      ),
+
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            onPressed: () {
+
+
+                            },
+                            icon: const Icon(Icons.help),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+
+                ],
+              ),
+            ),
+          )
+      ),
+    );
   }
 }
+
+class _DrinkAddAlertDialog extends StatefulWidget {
+  const _DrinkAddAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  State<_DrinkAddAlertDialog> createState() => _DrinkAddAlertDialogState();
+}
+
+class _DrinkAddAlertDialogState extends State<_DrinkAddAlertDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return  AlertDialog(
+      title: Text("Take a Photo of your drink "),
+
+      content: Row(
+        children: [
+
+          Expanded(
+            child: Card(
+
+              child: IconButton(icon: Icon(Icons.cancel_outlined, color: Colors.red,), onPressed: () => {},),
+            ),
+          ),
+          Expanded(
+            child: Card(
+              child: IconButton(icon: Icon(Icons.camera_alt,), onPressed: () => {},),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
