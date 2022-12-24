@@ -1,6 +1,6 @@
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
-import '../../offlineDatabase/domain/models/drinks.dart';
+import '../../offlineDatabase/domain/models/drink.dart';
 import '../../offlineDatabase/domain/models/pending_drink.dart';
 
 class Cache {
@@ -16,8 +16,9 @@ class Cache {
     return _drinks!;
   }
 
-  static Future<Drink> getDrinkById(int id) async {
-    for (Drink drink in await fetchDrinks()) {
+  static Drink getDrinkById(int id) {
+    reloadCache();
+    for (Drink drink in _drinks!) {
       if (drink.id == id) {
         return drink;
       }
@@ -35,6 +36,6 @@ class Cache {
 
   static Future<List<PendingDrink>> fetchDrinkQueue() async {
     DBOptRepo.updateDrinkQueue();
-    return await DBOptRepo.fetchDrinkQueue();
+    return await DBOptRepo.fetchPendingDrinks();
   }
 }

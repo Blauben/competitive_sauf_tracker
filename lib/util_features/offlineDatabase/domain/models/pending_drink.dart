@@ -1,5 +1,5 @@
 import '../../../cache/repository/cache.dart';
-import 'drinks.dart';
+import 'drink.dart';
 
 class PendingDrink {
   //TODO handle async in Constructor
@@ -7,7 +7,7 @@ class PendingDrink {
   DateTime begin;
 
   PendingDrink({required int drinkId, required this.begin}) {
-    init(drinkId);
+    drink = Cache.getDrinkById(drinkId);
   }
 
   factory PendingDrink.fromJson(Map<String, dynamic> json) {
@@ -21,10 +21,6 @@ class PendingDrink {
       result.add(PendingDrink.fromJson(map));
     }
     return result;
-  }
-
-  Future<void> init(int drinkId) async {
-    drink = await Cache.getDrinkById(drinkId);
   }
 
   @override

@@ -36,7 +36,7 @@ class DBOptService {
                 icon varchar(30) null,
                 iconType varchar(7) null,
                 check(percentage > 0 and percentage <= 100 and id >= 0),
-                check(iconType IS null or iconType = 'image' or iconType = 'flutter')
+                check(iconType IS null or iconType = 'image' or iconType = 'flutter' or iconType = 'custom')
                 );
                 """,
       """CREATE TABLE users (

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/drink_selector/body/drink_selector.dart';
 import 'package:sauf_tracker/main_features/drink_selector/widgets/drink_selector_item.dart';
 import 'package:sauf_tracker/util_features/custom_icons/domain/model/custom_icons.dart';
-import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/drinks.dart';
+import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/drink.dart';
 
 import '../../../main.dart';
 

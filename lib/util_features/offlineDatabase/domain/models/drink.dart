@@ -46,6 +46,10 @@ class Drink implements DBData {
         drink.image = Image.asset(json["icon"]);
         drink.imagePath = json["icon"];
         break;
+      case "custom":
+        drink.flutterIcon = Icon(IconData(int.parse(json["icon"]),
+            fontFamily: "CustomIcons", fontPackage: null));
+        break;
     }
     return drink;
   }
@@ -69,6 +73,7 @@ class Drink implements DBData {
       "iconType": iconType,
     };
     switch (iconType) {
+      case "custom":
       case "flutter":
         IconData? data = flutterIcon!.icon;
         map["icon"] = (data != null ? data.codePoint : 0xf04b6).toString();
