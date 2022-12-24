@@ -26,7 +26,7 @@ class Cache {
     throw Exception("No drink with id = $id found!");
   }
 
-  static void reloadCache() {
+  static void reloadCache() async {
     _fetchFromDB();
   }
 

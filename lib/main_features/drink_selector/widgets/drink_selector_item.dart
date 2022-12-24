@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/drink.dart';
+import 'package:sauf_tracker/util_features/persistence.dart';
 
 class DrinkCategorySelectorItem extends StatelessWidget {
   String title;
@@ -58,7 +61,7 @@ class _DrinkSelectorItemState extends State<DrinkSelectorItem> {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (c) => _DrinkAddAlertDialog(),
+                builder: (c) => _DrinkAddAlertDialog(drink: widget.drink ),
               );
             },
             child: Container(
@@ -107,42 +110,78 @@ class _DrinkSelectorItemState extends State<DrinkSelectorItem> {
 }
 
 class _DrinkAddAlertDialog extends StatefulWidget {
-  const _DrinkAddAlertDialog({Key? key}) : super(key: key);
+  final Drink drink;
+  const _DrinkAddAlertDialog({Key? key, required this.drink}) : super(key: key);
 
   @override
   State<_DrinkAddAlertDialog> createState() => _DrinkAddAlertDialogState();
 }
 
 class _DrinkAddAlertDialogState extends State<_DrinkAddAlertDialog> {
+  int timeLeft = 5;
+  Timer? timer;
+
+  @override
+  void initState() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        timeLeft--;
+        if(timeLeft == 0) {
+          _close();
+          timer.cancel();
+
+        }
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Take a Photo of your drink "),
+      title: Text("Take a Photo ($timeLeft)"),
       content: Row(
         children: [
           Expanded(
             child: Card(
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.cancel_outlined,
                   color: Colors.red,
                 ),
-                onPressed: () => {},
+                onPressed: _close,
               ),
             ),
           ),
           Expanded(
             child: Card(
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.camera_alt,
                 ),
-                onPressed: () => {},
+                onPressed: _takePhoto,
               ),
             ),
           )
         ],
       ),
     );
+  }
+
+
+  void _takePhoto() {
+    PersistenceLayer.startConsumingDrink(drink: widget.drink);
+
+  }
+
+
+  void _close()  {
+    Navigator.pop(context);
   }
 }
