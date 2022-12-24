@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
 import 'main_features/drink_selector/body/drink_category_selector.dart';
@@ -70,6 +71,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = <Widget>[
     const DrinkCategorySelectorBody(),
+    const PendingDrinksBody(),
     const Test(),
     const Test(),
   ];
@@ -128,11 +130,19 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         drawer: const SettingsDrawer(),
         body: _pages[currentIndex],
+
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+
           items: const [
             BottomNavigationBarItem(
               label: "Drinks",
               icon: Icon(Icons.sports_bar),
+            ),
+
+            BottomNavigationBarItem(
+              label: "Pending",
+              icon: Icon(Icons.add),
             ),
             BottomNavigationBarItem(
                 label: "Scoreboard", icon: Icon(Icons.leaderboard)),
