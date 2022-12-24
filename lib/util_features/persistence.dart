@@ -4,6 +4,7 @@ import 'offlineDatabase/domain/models/drink.dart';
 import 'offlineDatabase/domain/repository/db_opt.dart';
 
 class PersistenceLayer {
+  //TODO: synchronize data
 
   static void resetDatabase() {
     DBOptRepo.resetDatabase();

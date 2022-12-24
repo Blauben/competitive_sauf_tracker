@@ -16,9 +16,9 @@ class Cache {
     return _drinks!;
   }
 
-  static Drink getDrinkById(int id) {
+  static Future<Drink> getDrinkById(int id) async {
     reloadCache();
-    for (Drink drink in _drinks!) {
+    for (Drink drink in await fetchDrinks()) {
       if (drink.id == id) {
         return drink;
       }

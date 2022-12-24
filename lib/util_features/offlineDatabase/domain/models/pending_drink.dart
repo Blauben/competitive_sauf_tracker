@@ -2,8 +2,7 @@ import '../../../cache/repository/cache.dart';
 import 'drink.dart';
 
 class PendingDrink {
-  //TODO handle async in Constructor
-  Drink? drink;
+  Future<Drink>? drink;
   DateTime begin;
 
   PendingDrink({required int drinkId, required this.begin}) {

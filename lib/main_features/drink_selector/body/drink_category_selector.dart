@@ -10,7 +10,8 @@ class DrinkCategorySelectorBody extends StatefulWidget {
   const DrinkCategorySelectorBody({Key? key}) : super(key: key);
 
   @override
-  State<DrinkCategorySelectorBody> createState() => _DrinkCategorySelectorBodyState();
+  State<DrinkCategorySelectorBody> createState() =>
+      _DrinkCategorySelectorBodyState();
 }
 
 class _DrinkCategorySelectorBodyState extends State<DrinkCategorySelectorBody> {
@@ -37,13 +38,19 @@ class _DrinkCategorySelectorBodyState extends State<DrinkCategorySelectorBody> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Competitive sauf tracker"),
-        leading: currentIndex == 0 ? null : IconButton(onPressed: () {setState(() {
-          currentIndex = 0;
-        });}, icon: Icon(Icons.arrow_back)),
+        leading: currentIndex == 0
+            ? null
+            : IconButton(
+                onPressed: () {
+                  setState(() {
+                    currentIndex = 0;
+                  });
+                },
+                icon: Icon(Icons.arrow_back)),
       ),
       body: WillPopScope(
         child: drinkSelectorBodies[currentIndex],
-        onWillPop: () async{
+        onWillPop: () async {
           setState(() {
             currentIndex = 0;
           });
