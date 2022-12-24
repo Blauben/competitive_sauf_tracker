@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
 import '../../offlineDatabase/domain/models/drinks.dart';
+import '../../offlineDatabase/domain/models/pending_drink.dart';
 
 class Cache {
   static List<Drink>? _drinks;
@@ -10,17 +10,19 @@ class Cache {
     if (_drinks != null) {
       return _drinks!;
     }
-    DBOptRepo.insertDrink(Drink(id: 1, name: "Helles Mass", percentage: 5, volume: 1000, category: 1, flutterIcon: Icon(Icons.sports_bar)));
-    DBOptRepo.insertDrink(Drink(id: 2, name: "Helles Halbe", percentage: 5, volume: 500, category: 1, flutterIcon: Icon(Icons.sports_bar)));
-    DBOptRepo.insertDrink(Drink(id: 3, name: "Helles Klein", percentage: 5, volume: 333, category: 1, flutterIcon: Icon(Icons.sports_bar)));
 
-    DBOptRepo.insertDrink(Drink(id: 4, name: "Rot Wein", percentage: 12, volume: 12, category: 2, flutterIcon: Icon(Icons.wine_bar)));
-
-
-    _drinks =  await _fetchFromDB();
-
+    _drinks = await _fetchFromDB();
 
     return _drinks!;
+  }
+
+  static Future<Drink> getDrinkById(int id) async {
+    for (Drink drink in await fetchDrinks()) {
+      if (drink.id == id) {
+        return drink;
+      }
+    }
+    throw Exception("No drink with id = $id found!");
   }
 
   static void reloadCache() {
@@ -29,5 +31,10 @@ class Cache {
 
   static Future<List<Drink>> _fetchFromDB() async {
     return _drinks = await DBOptRepo.fetchDrinks();
+  }
+
+  static Future<List<PendingDrink>> fetchDrinkQueue() async {
+    DBOptRepo.updateDrinkQueue();
+    return await DBOptRepo.fetchDrinkQueue();
   }
 }

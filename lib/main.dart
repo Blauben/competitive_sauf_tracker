@@ -1,33 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sauf_tracker/main_features/drink_selector/body/drink_category_selector.dart';
-import 'package:sauf_tracker/main_features/scaffold/screens/main_scaffold.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
+import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
   DBOptRepo.resetDatabase();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final _router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const MainScreen(title: "Competitive Saufen"),
-      ),
-
-    ],
-  );
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: "Sauf App",
       theme: ThemeData(
         // This is the theme of your application.
@@ -41,8 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      routerConfig: _router,
-
+      home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }
 }

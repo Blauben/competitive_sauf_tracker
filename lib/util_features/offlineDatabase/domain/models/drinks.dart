@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-enum DrinkCategory {
-  beer,wine
-}
+import 'db_model.dart';
 
+enum DrinkCategory { beer, wine }
 
-class Drink {
+class Drink implements DBData {
   int id;
   String name;
   int percentage;
   int volume;
-  int category;
+  int categoryId;
   String iconType;
   Icon? flutterIcon;
   Image? image;
@@ -23,7 +22,7 @@ class Drink {
       required this.name,
       required this.percentage,
       required this.volume,
-      required this.category,
+      required this.categoryId,
       this.iconType = "flutter",
       this.flutterIcon = defaultIcon,
       this.image});
@@ -34,14 +33,14 @@ class Drink {
       name: json["name"],
       percentage: json["percentage"],
       volume: json["volume"],
-      category: json["category"],
-      iconType: json["iconType"],
+      categoryId: json["category_id"],
+      iconType: json["iconType"] ?? "flutter",
     );
 
     switch (json["iconType"]) {
       case "flutter":
-        drink.flutterIcon =
-            Icon(IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'));
+        drink.flutterIcon = Icon(
+            IconData(int.parse(json["icon"]), fontFamily: 'MaterialIcons'));
         break;
       case "image":
         drink.image = Image.asset(json["icon"]);
@@ -49,27 +48,6 @@ class Drink {
         break;
     }
     return drink;
-  }
-
-  Map<String, dynamic> toMap() {
-    var map = {
-      "id": id,
-      "name": name,
-      "percentage": percentage,
-      "volume": volume,
-      "category": category,
-      "iconType": iconType,
-    };
-    switch (iconType) {
-      case "flutter":
-        IconData? data = flutterIcon!.icon;
-        map["icon"] =( data != null ? data.codePoint : 0xf04b6).toString();
-        break;
-      case "image":
-        map["icon"] = imagePath!;
-        break;
-    }
-    return map;
   }
 
   static List<Drink> fromJsonList(List<Map<String, dynamic>> jsonList) {
@@ -81,7 +59,34 @@ class Drink {
   }
 
   @override
+  Map<String, dynamic> toMap() {
+    var map = {
+      "id": id,
+      "name": name,
+      "percentage": percentage,
+      "volume": volume,
+      "category_id": categoryId,
+      "iconType": iconType,
+    };
+    switch (iconType) {
+      case "flutter":
+        IconData? data = flutterIcon!.icon;
+        map["icon"] = (data != null ? data.codePoint : 0xf04b6).toString();
+        break;
+      case "image":
+        map["icon"] = imagePath!;
+        break;
+    }
+    return map;
+  }
+
+  @override
+  Map<String, dynamic> primaryKey() {
+    return {"id": id};
+  }
+
+  @override
   String toString() {
-    return "Drink{id: $id, name: $name, percentage: $percentage, volume: $volume}";
+    return "Drink{id: $id, name: $name, percentage: $percentage, volume: $volume, category: $categoryId}";
   }
 }
