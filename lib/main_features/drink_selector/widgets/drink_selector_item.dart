@@ -182,6 +182,7 @@ class _DrinkAddAlertDialogState extends State<_DrinkAddAlertDialog> {
 
 
   void _close()  {
+    print("ADD ");
     PersistenceLayer.startConsumingDrink(drink: widget.drink);
     Navigator.pop(context);
   }

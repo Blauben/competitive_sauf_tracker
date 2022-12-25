@@ -2,22 +2,26 @@ import '../../../cache/repository/cache.dart';
 import 'drink.dart';
 
 class PendingDrink {
-  Future<Drink>? drink;
+  Drink drink;
   DateTime begin;
 
-  PendingDrink({required int drinkId, required this.begin}) {
-    drink = Cache.getDrinkById(drinkId);
+  static Future<PendingDrink> create(
+      {required int drinkId, required begin}) async {
+    var drink = await Cache.getDrinkById(drinkId);
+    return PendingDrink._(drink, begin);
   }
 
-  factory PendingDrink.fromJson(Map<String, dynamic> json) {
-    return PendingDrink(
+  PendingDrink._(this.drink, this.begin);
+
+  static Future<PendingDrink> fromJson(Map<String, dynamic> json) {
+    return create(
         drinkId: json["drink_id"], begin: DateTime.parse(json["begin"]));
   }
 
-  static List<PendingDrink> fromJsonList(List<Map<String, dynamic>> jsonList) {
+  static Future<List<PendingDrink>> fromJsonList(List<Map<String, dynamic>> jsonList) async {
     List<PendingDrink> result = [];
     for (Map<String, dynamic> map in jsonList) {
-      result.add(PendingDrink.fromJson(map));
+      result.add(await PendingDrink.fromJson(map));
     }
     return result;
   }

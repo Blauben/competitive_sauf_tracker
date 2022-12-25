@@ -5,7 +5,6 @@ import '../models/drink.dart';
 import '../services/db_opt.dart';
 
 class DBOptRepo {
-
   static Future<Database> _db = DBOptService.database();
 
   static Future<void> resetDatabase() async {
@@ -26,11 +25,19 @@ class DBOptRepo {
       "begin": begin.toString(),
       "end": end.toString()
     };
+
+    var tuple2 = {
+      "drink_id": drinkMap["id"],
+      "begin": begin.toString(),
+      "maxEndUnixTime": 11111111111111111,
+    };
     DBOptService.insertInto(await _db, "consumed", [tuple]);
+    DBOptService.insertInto(await _db, "activeDrinks", [tuple2]);
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
-    DBOptService.updateIn(await _db, "consumed", {"drink_id":drink.id}, {"begin":DateTime.now().toIso8601String()});
+    DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
+        {"begin": DateTime.now().toIso8601String()});
   }
 
   static void insertDrink(Drink drink) async {
@@ -46,6 +53,8 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
 
   static Future<List<PendingDrink>> fetchPendingDrinks() async {
     var jsonList = await DBOptService.retrieveFrom(await _db, "activeDrinks");
-    return PendingDrink.fromJsonList(jsonList);
+
+    print("JSON LIST: " + jsonList.toString());
+    return await PendingDrink.fromJsonList(jsonList);
   }
 }
