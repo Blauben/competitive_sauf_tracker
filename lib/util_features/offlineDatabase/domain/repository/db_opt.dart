@@ -8,7 +8,7 @@ class DBOptRepo {
   static Future<Database> _db = DBOptService.database();
 
   static Future<void> resetDatabase() async {
-    DBOptService.resetDatabase("suff.db");
+    await DBOptService.resetDatabase("suff.db");
     _db = DBOptService.database();
   }
 
@@ -17,34 +17,23 @@ class DBOptRepo {
     return Drink.fromJsonList(maps);
   }
 
-  static void addDrinkToConsumed(
+  static Future<void> addDrinkToConsumed(
       {required Drink drink, required DateTime begin, DateTime? end}) async {
-    var drinkMap = drink.toMap();
-    var tuple = {
-      "drink_id": drinkMap["id"],
-      "begin": begin.toString(),
-      "end": end.toString()
-    };
-
-    var tuple2 = {
-      "drink_id": drinkMap["id"],
-      "begin": begin.toString(),
-      "maxEndUnixTime": 11111111111111111,
-    };
-    DBOptService.insertInto(await _db, "consumed", [tuple]);
-    DBOptService.insertInto(await _db, "activeDrinks", [tuple2]);
+    DBOptService.insertInto(await _db, "consumed", [
+      {"drink_id": drink.id, "begin": begin.toString(), "end": end?.toString()}
+    ]);
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
     DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
-        {"begin": DateTime.now().toIso8601String()});
+        {"end": DateTime.now().toString()});
   }
 
-  static void insertDrink(Drink drink) async {
+  static Future<void> insertDrink(Drink drink) async {
     DBOptService.insertInto(await _db, "drinks", [drink.toMap()]);
   }
 
-  static Future<void> updateDrinkQueue() async {
+  static Future<void> _updateDrinkQueue() async {
     String query =
         """WITH maxUnix AS (SELECT drink_id, maxEndUnixTime from activeDrinks)
 UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FROM maxUnix m WHERE c.drink_id = m.drink_id AND m.maxEndUnixTime < CAST(strftime('%s','now') AS integer)) WHERE c.end IS NULL;""";
@@ -52,9 +41,8 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
   }
 
   static Future<List<PendingDrink>> fetchPendingDrinks() async {
+    await _updateDrinkQueue();
     var jsonList = await DBOptService.retrieveFrom(await _db, "activeDrinks");
-
-    print("JSON LIST: " + jsonList.toString());
     return await PendingDrink.fromJsonList(jsonList);
   }
 }

@@ -5,19 +5,17 @@ import '../../offlineDatabase/domain/models/pending_drink.dart';
 
 class Cache {
   static List<Drink>? _drinks;
+  static List<PendingDrink>? _pending;
 
   static Future<List<Drink>> fetchDrinks() async {
-    if (_drinks != null) {
-      return _drinks!;
-    }
+    return _drinks ??= await DBOptRepo.fetchDrinks();
+  }
 
-    _drinks = await _fetchFromDB();
-
-    return _drinks!;
+  static Future<List<PendingDrink>> fetchPendingDrinks() async {
+    return _pending ??= await DBOptRepo.fetchPendingDrinks();
   }
 
   static Future<Drink> getDrinkById(int id) async {
-    reloadCache();
     for (Drink drink in await fetchDrinks()) {
       if (drink.id == id) {
         return drink;
@@ -26,16 +24,13 @@ class Cache {
     throw Exception("No drink with id = $id found!");
   }
 
-  static void reloadCache() async {
-    _fetchFromDB();
-  }
-
-  static Future<List<Drink>> _fetchFromDB() async {
-    return _drinks = await DBOptRepo.fetchDrinks();
-  }
-
-  static Future<List<PendingDrink>> fetchDrinkQueue() async {
-    DBOptRepo.updateDrinkQueue();
-    return await DBOptRepo.fetchPendingDrinks();
+  static Future<void> reloadCache(
+      {required bool drinks, required bool pending}) async {
+    if (drinks) {
+      _drinks = await fetchDrinks();
+    }
+    if (pending) {
+      _pending = await fetchPendingDrinks();
+    }
   }
 }

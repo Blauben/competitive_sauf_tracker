@@ -15,7 +15,7 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Text(widget.pendingDrink.drink?.name ?? "Error 404 (1)"),
+      child: Text(widget.pendingDrink.drink.name),
     );
   }
 }

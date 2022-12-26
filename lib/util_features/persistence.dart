@@ -1,32 +1,37 @@
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
 
+import 'cache/repository/cache.dart';
 import 'offlineDatabase/domain/models/drink.dart';
 import 'offlineDatabase/domain/repository/db_opt.dart';
 
 class PersistenceLayer {
   //TODO: synchronize data
 
-  static void resetDatabase() {
-    DBOptRepo.resetDatabase();
+  static Future<void> resetDatabase() async {
+    await DBOptRepo.resetDatabase();
+    Cache.reloadCache(drinks: true, pending: true);
   }
 
   static Future<List<Drink>> fetchDrinks() {
-    return DBOptRepo.fetchDrinks();
+    return Cache.fetchDrinks();
   }
 
   static Future<List<PendingDrink>> fetchPendingDrinks() {
-    return DBOptRepo.fetchPendingDrinks();
+    return Cache.fetchPendingDrinks();
   }
 
-  static void startConsumingDrink({required Drink drink}) {
-    DBOptRepo.addDrinkToConsumed(drink: drink, begin: DateTime.now());
+  static Future<void> startConsumingDrink({required Drink drink}) async {
+    await DBOptRepo.addDrinkToConsumed(drink: drink, begin: DateTime.now());
+    Cache.reloadCache(drinks: false, pending: true);
   }
 
-  static void finishConsumingDrink({required Drink drink}) {
-    DBOptRepo.finishConsumingDrink(drink: drink);
+  static Future<void> finishConsumingDrink({required Drink drink}) async {
+    await DBOptRepo.finishConsumingDrink(drink: drink);
+    Cache.reloadCache(drinks: false, pending: true);
   }
 
-  static void insertDrink({required Drink drink}) {
-    DBOptRepo.insertDrink(drink);
+  static Future<void> insertDrink({required Drink drink}) async {
+    await DBOptRepo.insertDrink(drink);
+    Cache.reloadCache(drinks: true, pending: false);
   }
 }

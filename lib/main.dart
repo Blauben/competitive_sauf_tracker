@@ -130,16 +130,13 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         drawer: const SettingsDrawer(),
         body: _pages[currentIndex],
-
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-
           items: const [
             BottomNavigationBarItem(
               label: "Drinks",
               icon: Icon(Icons.sports_bar),
             ),
-
             BottomNavigationBarItem(
               label: "Pending",
               icon: Icon(Icons.add),
