@@ -12,6 +12,7 @@ class PendingDrinksCubit extends Cubit<PendingDrinksState> {
 
 
   void fetchPending() async {
+    print("Fetch");
     List<PendingDrink> pending = await PersistenceLayer.fetchPendingDrinks();
     emit(PendingDrinksLoaded(pendingDrinks: pending));
   }

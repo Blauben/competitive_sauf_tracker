@@ -25,6 +25,7 @@ class _PendingDrinkListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("BUILD");
     return BlocBuilder<PendingDrinksCubit, PendingDrinksState>(
       bloc: PendingDrinksCubit()..fetchPending(),
       builder: (context, state)  {

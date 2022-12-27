@@ -19,7 +19,7 @@ class DBOptRepo {
 
   static Future<void> addDrinkToConsumed(
       {required Drink drink, required DateTime begin, DateTime? end}) async {
-    DBOptService.insertInto(await _db, "consumed", [
+    await DBOptService.insertInto(await _db, "consumed", [
       {"drink_id": drink.id, "begin": begin.toString(), "end": end?.toString()}
     ]);
   }

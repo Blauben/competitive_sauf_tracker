@@ -27,10 +27,10 @@ class Cache {
   static Future<void> reloadCache(
       {required bool drinks, required bool pending}) async {
     if (drinks) {
-      _drinks = await fetchDrinks();
+      _drinks = await DBOptRepo.fetchDrinks();
     }
     if (pending) {
-      _pending = await fetchPendingDrinks();
+      _pending = await DBOptRepo.fetchPendingDrinks();
     }
   }
 }
