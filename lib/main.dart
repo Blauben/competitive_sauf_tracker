@@ -6,7 +6,7 @@ import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
-  DBOptRepo.resetDatabase();
+  //DBOptRepo.resetDatabase();
   runApp(const MyApp());
 }
 

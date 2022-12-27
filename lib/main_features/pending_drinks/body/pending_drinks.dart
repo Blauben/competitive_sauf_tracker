@@ -37,7 +37,19 @@ class _PendingDrinkListView extends StatelessWidget {
         return ListView.builder(
           itemCount: state.pendingDrinks.length,
           itemBuilder: (context, index) {
-            return PendingDrinkCard(pendingDrink: state.pendingDrinks[index]);
+            return
+
+
+              Container(
+                height: 200,
+                margin: EdgeInsets.only(left: 15, right: 15),
+                child: Dismissible(
+
+                  key: ValueKey(index),
+                  child: PendingDrinkCard(pendingDrink: state.pendingDrinks[index]),
+                )
+              );
+
           },
         );
       },
