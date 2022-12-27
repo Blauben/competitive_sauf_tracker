@@ -45,4 +45,17 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
     var jsonList = await DBOptService.retrieveFrom(await _db, "activeDrinks");
     return await PendingDrink.fromJsonList(jsonList);
   }
+
+  static Future<List<PendingDrink>> consumedLastTimeInterval(
+      int seconds) async {
+    await _updateDrinkQueue();
+    var jsonList =
+        await DBOptService.retrieveFrom(await _db, "consumed", condition: {
+      "CAST(strftime('%s','now') AS integer) - CAST(strftime('%s',begin) AS integer)":
+          seconds
+    }, conditionComp: [
+      "<"
+    ]);
+    return await PendingDrink.fromJsonList(jsonList);
+  }
 }

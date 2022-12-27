@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
-import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 
 import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
@@ -19,17 +18,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Sauf App",
       theme: ThemeData.dark(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
 
-      ),
+          ),
       home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }

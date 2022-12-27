@@ -34,4 +34,10 @@ class PersistenceLayer {
     await DBOptRepo.insertDrink(drink);
     await Cache.reloadCache(drinks: true, pending: false);
   }
+
+  static Future<List<PendingDrink>> consumedLastTimeInterval(
+      int seconds) async {
+    await Cache.reloadCache(drinks: false, pending: true);
+    return await DBOptRepo.consumedLastTimeInterval(seconds);
+  }
 }

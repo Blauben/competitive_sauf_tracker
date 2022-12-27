@@ -56,7 +56,7 @@ class DBOptService {
             drink_id integer references drinks on delete set null on update cascade,        
             begin timestamp not null,     
             end timestamp,    
-            check(end > begin)
+            check(end >= begin)
       );
       """,
       """CREATE TABLE drink_category (
@@ -86,7 +86,7 @@ class DBOptService {
     return [
       """INSERT INTO drink_category VALUES(1,'Bier',30),(2,'Wein',60);""",
       """INSERT INTO drinks values(1,'Augustiner',5,500,1,NULL,NULL),(2,'Rose',12,300,2,NULL,NULL),(3,'Gluehwein',10,300,2,NULL,NULL);""",
-      """INSERT INTO consumed values(1,'2022-12-23 03:00','2022-12-23 03:30'),(2,'2022-12-23 03:30',NULL),(3,datetime('now'),NULL);"""
+      """INSERT INTO consumed values(1,'2022-12-23 03:00','2022-12-23 03:30'),(2,'2022-12-23 03:30',NULL),(3,datetime('now'),NULL),(2,datetime('now'),datetime('now'));"""
     ];
   }
 
@@ -98,24 +98,22 @@ class DBOptService {
     }
   }
 
-  static Future<void> updateIn(
-      Database db,
-      String table,
-      Map<String, dynamic> condition,
-      Map<String, dynamic> updatedValues) async {
+  static Future<void> updateIn(Database db, String table,
+      Map<String, dynamic> condition, Map<String, dynamic> updatedValues,
+      {List<String>? conditionComp}) async {
     await db.update(table, updatedValues,
-        where: _buildWhereCondition(condition.keys),
+        where: _buildWhereCondition(condition.keys, compOp: conditionComp),
         whereArgs: condition.values.toList());
   }
 
   static Future<List<Map<String, dynamic>>> retrieveFrom(
       Database db, String table,
-      {Map<String, dynamic>? condition}) async {
+      {Map<String, dynamic>? condition, List<String>? conditionComp}) async {
     if (condition == null) {
       return await db.query(table);
     }
     return await db.query(table,
-        where: _buildWhereCondition(condition.keys),
+        where: _buildWhereCondition(condition.keys, compOp: conditionComp),
         whereArgs: condition.values.toList());
   }
 
@@ -132,10 +130,12 @@ class DBOptService {
     }
   }
 
-  static String? _buildWhereCondition(Iterable<String> keys) {
+  static String? _buildWhereCondition(Iterable<String> keys,
+      {List<String>? compOp}) {
+    compOp ??= ["="];
     String where = "";
-    for (String key in keys) {
-      where += "$key = ? and ";
+    for (int i = 0; i < keys.length; i++) {
+      where += "${keys.elementAt(i)} ${compOp[i % compOp.length]} ? and ";
     }
     return where == "" ? null : where.substring(0, where.length - 5);
   }
