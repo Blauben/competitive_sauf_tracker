@@ -33,23 +33,29 @@ class _PendingDrinkListView extends StatelessWidget {
             child: Text("No pending drinks"),
           );
         }
-        return ListView.builder(
-          itemCount: state.pendingDrinks.length,
-          itemBuilder: (context, index) {
-            return
+        return SingleChildScrollView(
 
+          child: ExpansionTile(
+            initiallyExpanded: true,
+            title: Text("Pending", style: TextStyle(fontSize: 20),),
+            leading: Icon(Icons.timelapse_rounded),
+            children: [
+              AnimatedList(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                initialItemCount: state.pendingDrinks.length,
+                itemBuilder: (context, index, an) {
+                  return
+                    Container(
+                      height: 220,
+                      margin: EdgeInsets.only(left: 15, right: 15),
+                      child: PendingDrinkCard(pendingDrink: state.pendingDrinks[index]),
+                    );
 
-              Container(
-                height: 200,
-                margin: EdgeInsets.only(left: 15, right: 15),
-                child: Dismissible(
-
-                  key: ValueKey(index),
-                  child: PendingDrinkCard(pendingDrink: state.pendingDrinks[index]),
-                )
-              );
-
-          },
+                },
+              )
+            ],
+          ),
         );
       },
     );

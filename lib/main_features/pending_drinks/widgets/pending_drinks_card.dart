@@ -45,15 +45,15 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shadowColor: Colors.teal,
+        shadowColor: Colors.green,
         elevation: 3,
         child: InkWell(
-          onTap: () => {},
+          onTap: _onCardPress,
           child: Container(
             margin: const EdgeInsets.only(top: 30),
             child: Column(
               children: [
-                widget.pendingDrink.drink.flutterIcon  == null ? Icon(Icons.error_outline, size: 70,) : Icon(widget.pendingDrink.drink.flutterIcon!.icon, size: 70,),
+                widget.pendingDrink.drink.flutterIcon  == null ? Icon(Icons.error_outline, size: 60,) : Icon(widget.pendingDrink.drink.flutterIcon!.icon, size: 60,),
                 const Spacer(),
                 Text(
                   widget.pendingDrink.drink.name,
@@ -64,18 +64,32 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
                 RichText(
                   text: TextSpan(
                     text: "Seit:",
-                    style: TextStyle(color: Colors.black, fontSize: 13),
+                    style: TextStyle(color: Colors.white70, fontSize: 15),
                     children: [
                       TextSpan(text: "${_buildTimerText()}", style: TextStyle(color: Colors.green))
                     ]
                   ),
                 ),
                 const Spacer(),
+                OutlinedButton(
+                  style: OutlinedButtonTheme.of(context).style,
+                  onPressed: _onCheckPress,
+                  child: const Icon(Icons.check, color: Colors.green,),
+
+                )
               ],
             ),
           ),
         )
     );
+  }
+
+  void _onCardPress() {
+
+  }
+
+  void _onCheckPress() {
+
   }
 
 
