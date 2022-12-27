@@ -9,7 +9,7 @@ class PersistenceLayer {
 
   static Future<void> resetDatabase() async {
     await DBOptRepo.resetDatabase();
-    Cache.reloadCache(drinks: true, pending: true);
+    await Cache.reloadCache(drinks: true, pending: true);
   }
 
   static Future<List<Drink>> fetchDrinks() {
@@ -22,16 +22,16 @@ class PersistenceLayer {
 
   static Future<void> startConsumingDrink({required Drink drink}) async {
     await DBOptRepo.addDrinkToConsumed(drink: drink, begin: DateTime.now());
-    Cache.reloadCache(drinks: false, pending: true);
+    await Cache.reloadCache(drinks: false, pending: true);
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
     await DBOptRepo.finishConsumingDrink(drink: drink);
-    Cache.reloadCache(drinks: false, pending: true);
+    await Cache.reloadCache(drinks: false, pending: true);
   }
 
   static Future<void> insertDrink({required Drink drink}) async {
     await DBOptRepo.insertDrink(drink);
-    Cache.reloadCache(drinks: true, pending: false);
+    await Cache.reloadCache(drinks: true, pending: false);
   }
 }

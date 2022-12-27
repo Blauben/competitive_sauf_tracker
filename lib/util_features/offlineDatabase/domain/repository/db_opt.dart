@@ -25,19 +25,19 @@ class DBOptRepo {
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
-    DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
+    await DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
         {"end": DateTime.now().toString()});
   }
 
   static Future<void> insertDrink(Drink drink) async {
-    DBOptService.insertInto(await _db, "drinks", [drink.toMap()]);
+    await DBOptService.insertInto(await _db, "drinks", [drink.toMap()]);
   }
 
   static Future<void> _updateDrinkQueue() async {
     String query =
         """WITH maxUnix AS (SELECT drink_id, maxEndUnixTime from activeDrinks)
 UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FROM maxUnix m WHERE c.drink_id = m.drink_id AND m.maxEndUnixTime < CAST(strftime('%s','now') AS integer)) WHERE c.end IS NULL;""";
-    DBOptService.query(db: await _db, query: query);
+    await DBOptService.query(db: await _db, query: query);
   }
 
   static Future<List<PendingDrink>> fetchPendingDrinks() async {

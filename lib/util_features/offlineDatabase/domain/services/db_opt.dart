@@ -98,9 +98,12 @@ class DBOptService {
     }
   }
 
-  static void updateIn(Database db, String table,
-      Map<String, dynamic> condition, Map<String, dynamic> updatedValues) {
-    db.update(table, updatedValues,
+  static Future<void> updateIn(
+      Database db,
+      String table,
+      Map<String, dynamic> condition,
+      Map<String, dynamic> updatedValues) async {
+    await db.update(table, updatedValues,
         where: _buildWhereCondition(condition.keys),
         whereArgs: condition.values.toList());
   }
@@ -116,10 +119,10 @@ class DBOptService {
         whereArgs: condition.values.toList());
   }
 
-  static void deleteFrom(Database db, table,
+  static Future<void> deleteFrom(Database db, table,
       {List<Map<String, dynamic>>? rows}) async {
     if (rows == null) {
-      db.delete(table);
+      await db.delete(table);
       return;
     }
     for (Map<String, dynamic> tuple in rows) {
@@ -141,6 +144,6 @@ class DBOptService {
       {required Database db,
       required String query,
       List<dynamic>? args}) async {
-    return db.rawQuery(query, args);
+    return await db.rawQuery(query, args);
   }
 }
