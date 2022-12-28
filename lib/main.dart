@@ -1,6 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
+import 'package:sauf_tracker/util_features/cache/repository/cache.dart';
+import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
+import 'package:sauf_tracker/util_features/persistence.dart';
 
 import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
@@ -139,10 +142,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               label: "Pending",
-              icon: Badge(
-                badgeContent: Text("1"),
-                child: Icon(Icons.timelapse_rounded),
-              ),
+              icon: _buildStreamBuilderForPendingIcon(),
             ),
             const BottomNavigationBarItem(
                 label: "Scoreboard", icon: Icon(Icons.leaderboard)),
@@ -156,6 +156,30 @@ class _MainScreenState extends State<MainScreen> {
           },
           currentIndex: currentIndex,
         ));
+  }
+
+  StreamBuilder _buildStreamBuilderForPendingIcon() {
+
+    var s =  StreamBuilder<List<PendingDrink>>(
+      stream: PersistenceLayer.pendingDrinksUpdateStream,
+      builder: (context, snapshot) {
+        if(snapshot.hasError) {
+          return Icon(Icons.timelapse_rounded);
+        } else if(snapshot.hasData) {
+          return Badge(
+            badgeContent: Text(snapshot.data!.length.toString()),
+            child: Icon(Icons.timelapse_rounded),
+          );
+
+        } else {
+
+          return Icon(Icons.timelapse_rounded);
+        }
+      },
+    );
+
+    PersistenceLayer.fetchPendingDrinks();
+    return s;
   }
 }
 
