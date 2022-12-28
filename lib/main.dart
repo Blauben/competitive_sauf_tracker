@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
 
@@ -131,18 +132,21 @@ class _MainScreenState extends State<MainScreen> {
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
+          items:  [
+            const BottomNavigationBarItem(
               label: "Drinks",
               icon: Icon(Icons.sports_bar),
             ),
             BottomNavigationBarItem(
               label: "Pending",
-              icon: Icon(Icons.add),
+              icon: Badge(
+                badgeContent: Text("1"),
+                child: Icon(Icons.timelapse_rounded),
+              ),
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
                 label: "Scoreboard", icon: Icon(Icons.leaderboard)),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
                 label: "Statistics", icon: Icon(Icons.analytics)),
           ],
           onTap: (int index) {

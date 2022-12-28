@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/providers/pending_drinks_cubit.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/widgets/pending_drinks_card.dart';
+import 'package:sauf_tracker/util_features/persistence.dart';
 
 class PendingDrinksBody extends StatelessWidget {
   const PendingDrinksBody({Key? key}) : super(key: key);
@@ -21,7 +22,9 @@ class PendingDrinksBody extends StatelessWidget {
 
 
 class _PendingDrinkListView extends StatelessWidget {
+
   const _PendingDrinkListView({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +36,50 @@ class _PendingDrinkListView extends StatelessWidget {
             child: Text("No pending drinks"),
           );
         }
-        return SingleChildScrollView(
+        return ListView(
+          children: [
 
-          child: ExpansionTile(
-            initiallyExpanded: true,
-            title: Text("Pending", style: TextStyle(fontSize: 20),),
-            leading: Icon(Icons.timelapse_rounded),
-            children: [
-              AnimatedList(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                initialItemCount: state.pendingDrinks.length,
-                itemBuilder: (context, index, an) {
-                  return
-                    Container(
-                      height: 220,
-                      margin: EdgeInsets.only(left: 15, right: 15),
-                      child: PendingDrinkCard(pendingDrink: state.pendingDrinks[index]),
-                    );
+            ExpansionTile(
+              initiallyExpanded: true,
+              title: Text("Pending", style: TextStyle(fontSize: 20),),
+              leading: Icon(Icons.timelapse_rounded),
+              children: [
+                AnimatedList(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  initialItemCount: state.pendingDrinks.length,
+                  itemBuilder: (context, index, an) {
+                    return
+                      Container(
+                        height: 220,
+                        margin: EdgeInsets.only(left: 15, right: 15),
+                        child: PendingDrinkCard(pendingDrink: state.pendingDrinks[index]),
+                      );
 
-                },
-              )
-            ],
-          ),
+                  },
+                )
+              ],
+            ),
+
+
+            ExpansionTile(
+              initiallyExpanded: true,
+              title: Text("Last 24h", style: TextStyle(fontSize: 20),),
+              leading: Icon(Icons.more_time),
+              children: [
+                AnimatedList(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  initialItemCount: state.pendingDrinks.length,
+                  itemBuilder: (context, index, an) {
+                    return const Placeholder();
+
+
+                  },
+                )
+              ],
+            ),
+          ],
         );
       },
     );
