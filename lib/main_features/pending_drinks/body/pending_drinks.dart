@@ -36,6 +36,7 @@ class _PendingDrinkListView extends StatelessWidget {
             child: Text("No pending drinks"),
           );
         }
+        print(state.pendingDrinks.length.toString());
         return ListView(
           children: [
 
@@ -44,11 +45,12 @@ class _PendingDrinkListView extends StatelessWidget {
               title: Text("Pending", style: TextStyle(fontSize: 20),),
               leading: Icon(Icons.timelapse_rounded),
               children: [
-                AnimatedList(
+                ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  initialItemCount: state.pendingDrinks.length,
-                  itemBuilder: (context, index, an) {
+                  itemCount: state.pendingDrinks.length,
+
+                  itemBuilder: (context, index) {
                     return
                       Container(
                         height: 220,

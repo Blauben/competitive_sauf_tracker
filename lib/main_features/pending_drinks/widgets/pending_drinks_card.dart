@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
+import 'package:sauf_tracker/util_features/persistence.dart';
 
 class PendingDrinkCard extends StatefulWidget {
   final PendingDrink pendingDrink;
@@ -89,7 +90,7 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
   }
 
   void _onCheckPress() {
-
+    PersistenceLayer.finishConsumingDrink(drink: widget.pendingDrink.drink);
   }
 
 

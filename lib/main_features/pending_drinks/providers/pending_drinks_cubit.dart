@@ -7,7 +7,11 @@ import '../../../util_features/offlineDatabase/domain/models/pending_drink.dart'
 part 'pending_drinks_state.dart';
 
 class PendingDrinksCubit extends Cubit<PendingDrinksState> {
-  PendingDrinksCubit() : super(PendingDrinksInitial());
+  PendingDrinksCubit() : super(PendingDrinksInitial()) {
+    PersistenceLayer.pendingDrinksUpdateStream.listen((event) {
+      emit(PendingDrinksLoaded(pendingDrinks: event));
+    });
+  }
 
 
 
