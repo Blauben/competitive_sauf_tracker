@@ -60,4 +60,12 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
     ]);
     return await PendingDrink.fromJsonList(jsonList);
   }
+
+  static Future<int> fetchNextPendingDrinkTimeDue() async {
+    var result = (await DBOptService.query(
+        db: await _db,
+        query:
+            "SELECT COALESCE(MIN(maxEndUnixTime),0) as time FROM activeDrinks"));
+    return result.first["time"];
+  }
 }

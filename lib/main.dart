@@ -1,15 +1,16 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
-import 'package:sauf_tracker/util_features/cache/repository/cache.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
+import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 import 'package:sauf_tracker/util_features/persistence.dart';
 
 import 'main_features/drink_selector/body/drink_category_selector.dart';
 import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
-  //DBOptRepo.resetDatabase();
+  DBOptRepo.resetDatabase();
+  PersistenceLayer.init();
   runApp(const MyApp());
 }
 
@@ -127,7 +128,7 @@ class _MainScreenState extends State<MainScreen> {
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          items:  [
+          items: [
             const BottomNavigationBarItem(
               label: "Drinks",
               icon: Icon(Icons.sports_bar),
@@ -151,20 +152,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   StreamBuilder _buildStreamBuilderForPendingIcon() {
-
-    var s =  StreamBuilder<List<PendingDrink>>(
+    var s = StreamBuilder<List<PendingDrink>>(
       stream: PersistenceLayer.pendingDrinksUpdateStream,
       builder: (context, snapshot) {
-        if(snapshot.hasError) {
+        if (snapshot.hasError) {
           return Icon(Icons.timelapse_rounded);
-        } else if(snapshot.hasData) {
+        } else if (snapshot.hasData) {
           return Badge(
             badgeContent: Text(snapshot.data!.length.toString()),
             child: Icon(Icons.timelapse_rounded),
           );
-
         } else {
-
           return Icon(Icons.timelapse_rounded);
         }
       },
