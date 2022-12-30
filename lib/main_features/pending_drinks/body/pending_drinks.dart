@@ -66,8 +66,8 @@ class _PendingDrinkListView extends StatelessWidget {
 
             ExpansionTile(
               initiallyExpanded: true,
-              title: Text("Last 24h", style: TextStyle(fontSize: 20),),
-              leading: Icon(Icons.more_time),
+              title: const Text("Last 24h", style: TextStyle(fontSize: 20),),
+              leading: const Icon(Icons.more_time),
               children: [
                 AnimatedList(
                   shrinkWrap: true,
