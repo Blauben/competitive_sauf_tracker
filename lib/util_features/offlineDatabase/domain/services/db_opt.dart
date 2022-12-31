@@ -54,7 +54,7 @@ class DBOptService {
             """,
       """CREATE TABLE consumed (  
             drink_id integer references drinks on delete set null on update cascade,        
-            begin timestamp not null,     
+            begin timestamp primary key,     
             end timestamp,    
             check(end >= begin)
       );

@@ -25,8 +25,9 @@ class PersistenceLayer {
     await Cache.reloadCache(drinks: false, pending: true);
   }
 
-  static Future<void> finishConsumingDrink({required Drink drink}) async {
-    await DBOptRepo.finishConsumingDrink(drink: drink);
+  static Future<void> finishConsumingDrink(
+      {required PendingDrink pendingDrink}) async {
+    await DBOptRepo.finishConsumingDrink(pendingDrink: pendingDrink);
     await Cache.reloadCache(drinks: false, pending: true);
   }
 
@@ -37,7 +38,6 @@ class PersistenceLayer {
 
   static Future<List<PendingDrink>> consumedLastTimeInterval(
       int seconds) async {
-    await Cache.reloadCache(drinks: false, pending: true);
     return await DBOptRepo.consumedLastTimeInterval(seconds);
   }
 }
