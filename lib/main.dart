@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:sauf_tracker/main_features/pending_drinks/body/pending_drinks.dart';
+import 'package:sauf_tracker/util_features/cache/repository/cache.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/repository/db_opt.dart';
 import 'package:sauf_tracker/util_features/persistence.dart';
@@ -10,7 +11,6 @@ import 'main_features/settings_drawer/widgets/settings_drawer.dart';
 
 void main() async {
   DBOptRepo.resetDatabase();
-  PersistenceLayer.init();
   runApp(const MyApp());
 }
 
@@ -22,10 +22,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Sauf App",
-      theme: ThemeData.from(colorScheme:  ColorScheme(
-          brightness: Brightness.dark, primary: Color(0x2D033B), onPrimary: Colors.purple, secondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1 ), onSecondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1 ), error: Colors.red, onError: Colors.red, background: Color.fromARGB(255,32,33,36), onBackground: Colors.white, surface: Color.fromRGBO(129, 12, 168, 0.1), onSurface: Colors.white,
-
-      ), textTheme: TextTheme()),
+      theme: ThemeData.from(
+          colorScheme: ColorScheme(
+            brightness: Brightness.dark,
+            primary: Color(0x2D033B),
+            onPrimary: Colors.purple,
+            secondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1),
+            onSecondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1),
+            error: Colors.red,
+            onError: Colors.red,
+            background: Color.fromARGB(255, 32, 33, 36),
+            onBackground: Colors.white,
+            surface: Color.fromRGBO(129, 12, 168, 0.1),
+            onSurface: Colors.white,
+          ),
+          textTheme: TextTheme()),
       home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }
@@ -153,7 +164,7 @@ class _MainScreenState extends State<MainScreen> {
 
   StreamBuilder _buildStreamBuilderForPendingIcon() {
     var s = StreamBuilder<List<PendingDrink>>(
-      stream: PersistenceLayer.pendingDrinksUpdateStream,
+      stream: Cache.pendingDrinksUpdateStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Icon(Icons.timelapse_rounded);

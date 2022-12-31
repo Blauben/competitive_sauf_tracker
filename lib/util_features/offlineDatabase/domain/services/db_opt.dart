@@ -86,7 +86,7 @@ class DBOptService {
     return [
       """INSERT INTO drink_category VALUES(1,'Bier',30),(2,'Wein',60);""",
       """INSERT INTO drinks values(1,'Augustiner',5,500,1,NULL,NULL),(2,'Rose',12,300,2,NULL,NULL),(3,'Gluehwein',10,300,2,NULL,NULL);""",
-      """INSERT INTO consumed values(1,'2022-12-23 03:00','2022-12-23 03:30'),(2,'2022-12-23 03:30',NULL),(3,datetime(strftime("%s",'now') - 59*60 - 50, 'unixepoch'),NULL),(2,datetime('now'),datetime('now'));"""
+      """INSERT INTO consumed values(1,'2022-12-23 03:00','2022-12-23 03:30'),(2,'2022-12-23 03:30',NULL),(3,datetime(strftime('%s','now') - 59*60 - 50, 'unixepoch'),NULL),(2,datetime('now'),datetime('now'));"""
     ];
   }
 

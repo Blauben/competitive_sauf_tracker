@@ -7,13 +7,6 @@ import 'offlineDatabase/domain/models/drink.dart';
 import 'offlineDatabase/domain/repository/db_opt.dart';
 
 class PersistenceLayer {
-  static final StreamController<List<PendingDrink>>
-      _pendingDrinksUpdateStreamController = StreamController.broadcast();
-
-  static void init() {
-    Cache.initTimer();
-  }
-
   static Future<void> resetDatabase() async {
     await DBOptRepo.resetDatabase();
     await Cache.reloadCache(drinks: true, pending: true);
@@ -24,25 +17,17 @@ class PersistenceLayer {
   }
 
   static Future<List<PendingDrink>> fetchPendingDrinks() async {
-    return Cache.fetchPendingDrinks()
-      ..then((value) async => _pendingDrinksUpdateStreamController
-          .add(await Cache.fetchPendingDrinks()));
-  }
-
-  static Future<void> sendPendingDrinks(List<PendingDrink> pending) async {
-    _pendingDrinksUpdateStreamController.add(pending);
+    return Cache.fetchPendingDrinks();
   }
 
   static Future<void> startConsumingDrink({required Drink drink}) async {
     await DBOptRepo.addDrinkToConsumed(drink: drink, begin: DateTime.now());
     await Cache.reloadCache(drinks: false, pending: true);
-    _pendingDrinksUpdateStreamController.add(await Cache.fetchPendingDrinks());
   }
 
   static Future<void> finishConsumingDrink({required Drink drink}) async {
     await DBOptRepo.finishConsumingDrink(drink: drink);
     await Cache.reloadCache(drinks: false, pending: true);
-    _pendingDrinksUpdateStreamController.add(await Cache.fetchPendingDrinks());
   }
 
   static Future<void> insertDrink({required Drink drink}) async {
@@ -54,9 +39,5 @@ class PersistenceLayer {
       int seconds) async {
     await Cache.reloadCache(drinks: false, pending: true);
     return await DBOptRepo.consumedLastTimeInterval(seconds);
-  }
-
-  static Stream<List<PendingDrink>> get pendingDrinksUpdateStream {
-    return _pendingDrinksUpdateStreamController.stream;
   }
 }
