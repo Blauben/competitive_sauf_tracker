@@ -26,7 +26,8 @@ class Cache {
     pendingTimer = Timer(
         Duration(
             milliseconds: (unixDrinkTimelimitMilli -
-                DateTime.now().millisecondsSinceEpoch)),
+                    DateTime.now().millisecondsSinceEpoch) +
+                1000),
         firePendingTimer);
   }
 
