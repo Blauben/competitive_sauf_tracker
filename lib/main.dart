@@ -22,21 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Sauf App",
-      theme: ThemeData.from(
-          colorScheme: const ColorScheme(
-            brightness: Brightness.dark,
-            primary: Color(0x2D033B),
-            onPrimary: Colors.white,
-            secondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1),
-            onSecondary: Colors.white,
-            error: Colors.red,
-            onError: Colors.red,
-            background: Color.fromARGB(255, 32, 33, 36),
-            onBackground: Colors.white,
-            surface: Color.fromRGBO(129, 12, 168, 0.1),
-            onSurface: Colors.white,
-          ),
-          textTheme: TextTheme()),
+      theme: ThemeData.dark(),
       home: const MainScreen(title: "Competitive Sauf Tracker"),
     );
   }

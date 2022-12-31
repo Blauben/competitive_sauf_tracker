@@ -32,18 +32,13 @@ class _PendingDrinkListView extends StatelessWidget {
     return BlocBuilder<PendingDrinksCubit, PendingDrinksState>(
       bloc: PendingDrinksCubit()..fetchPending(),
       builder: (context, state) {
-        if (state.pendingDrinks.isEmpty) {
-          return const Center(
-            child: Text("No pending drinks"),
-          );
-        }
         return ListView(
           children: [
             ExpansionTile(
               initiallyExpanded: true,
-              title: const Text(
-                "Pending",
-                style: TextStyle(fontSize: 20),
+              title: Text(
+                "Pending (${state.pendingDrinks.length})",
+                style: const TextStyle(fontSize: 20),
               ),
               leading: Icon(Icons.timelapse_rounded),
               children: [
@@ -62,10 +57,13 @@ class _PendingDrinkListView extends StatelessWidget {
                 )
               ],
             ),
+            Container(
+              height: 30,
+            ),
             ExpansionTile(
               initiallyExpanded: true,
-              title: const Text(
-                "Last 24h",
+              title: Text(
+                "Last 24h (${state.drunk.length})",
                 style: TextStyle(fontSize: 20),
               ),
               leading: const Icon(Icons.more_time),
@@ -73,9 +71,9 @@ class _PendingDrinkListView extends StatelessWidget {
                 AnimatedList(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  initialItemCount: state.pendingDrinks.length,
+                  initialItemCount: state.drunk.length,
                   itemBuilder: (context, index, an) {
-                    return const Placeholder();
+                    return Text(state.drunk[index].drink.name);
                   },
                 )
               ],
