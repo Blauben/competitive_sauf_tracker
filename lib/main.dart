@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Sauf App",
       theme: ThemeData.from(
-          colorScheme: ColorScheme(
+          colorScheme: const ColorScheme(
             brightness: Brightness.dark,
             primary: Color(0x2D033B),
-            onPrimary: Colors.purple,
+            onPrimary: Colors.white,
             secondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1),
-            onSecondary: Color.fromRGBO(0x7c, 0x4d, 0xff, 1),
+            onSecondary: Colors.white,
             error: Colors.red,
             onError: Colors.red,
             background: Color.fromARGB(255, 32, 33, 36),
