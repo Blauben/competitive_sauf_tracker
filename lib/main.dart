@@ -168,7 +168,7 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Icon(Icons.timelapse_rounded);
-        } else if (snapshot.hasData) {
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           return Badge(
             badgeContent: Text(snapshot.data!.length.toString()),
             child: Icon(Icons.timelapse_rounded),
