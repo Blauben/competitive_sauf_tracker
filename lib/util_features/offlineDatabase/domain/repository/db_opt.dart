@@ -81,10 +81,10 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
         await DBOptService.retrieveFrom(await _db, "consumed", condition: {
       "CAST(strftime('%s','now') AS integer) - CAST(strftime('%s',begin) AS integer)":
           seconds,
-      "end": null
+      "end": "NULL"
     }, conditionComp: [
       "<",
-      "="
+      "!="
     ]);
     return await PendingDrink.fromJsonList(jsonList);
   }
