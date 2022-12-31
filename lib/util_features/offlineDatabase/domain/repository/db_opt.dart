@@ -9,6 +9,15 @@ import '../services/db_opt.dart';
 class DBOptRepo {
   static Future<Database> _db = DBOptService.database();
 
+  static String? dateTimeToSQLiteString(DateTime? timestamp) {
+    if (timestamp == null) {
+      return null;
+    }
+    RegExp regExp = RegExp("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}(?::\\d{2})?",
+        caseSensitive: false, multiLine: false);
+    return regExp.firstMatch(timestamp.toString())?.group(0) ?? "";
+  }
+
   static Future<void> resetDatabase() async {
     print("DB RESET");
     await DBOptService.resetDatabase("suff.db");
@@ -25,14 +34,23 @@ class DBOptRepo {
       {required Drink drink, required DateTime begin, DateTime? end}) async {
     print("DB ADD_CONSUMED");
     await DBOptService.insertInto(await _db, "consumed", [
-      {"drink_id": drink.id, "begin": begin.toString(), "end": end?.toString()}
+      {
+        "drink_id": drink.id,
+        "begin": dateTimeToSQLiteString(begin),
+        "end": dateTimeToSQLiteString(end)
+      }
     ]);
   }
 
-  static Future<void> finishConsumingDrink({required Drink drink}) async {
+  static Future<void> finishConsumingDrink(
+      {required PendingDrink pendingDrink}) async {
     print("DB FINISH_CONSUMED");
-    await DBOptService.updateIn(await _db, "consumed", {"drink_id": drink.id},
-        {"end": DateTime.now().toString()});
+    await DBOptService.updateIn(await _db, "consumed", {
+      "drink_id": pendingDrink.drink.id,
+      "begin": dateTimeToSQLiteString(pendingDrink.begin)
+    }, {
+      "end": dateTimeToSQLiteString(DateTime.now())
+    });
   }
 
   static Future<void> insertDrink(Drink drink) async {
@@ -62,9 +80,11 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
     var jsonList =
         await DBOptService.retrieveFrom(await _db, "consumed", condition: {
       "CAST(strftime('%s','now') AS integer) - CAST(strftime('%s',begin) AS integer)":
-          seconds
+          seconds,
+      "end": null
     }, conditionComp: [
-      "<"
+      "<",
+      "="
     ]);
     return await PendingDrink.fromJsonList(jsonList);
   }

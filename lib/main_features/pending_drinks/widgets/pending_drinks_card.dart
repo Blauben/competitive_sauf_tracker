@@ -16,8 +16,6 @@ class PendingDrinkCard extends StatefulWidget {
 }
 
 class _PendingDrinkCardState extends State<PendingDrinkCard> {
-
-
   Duration timeSinceBegin = const Duration(seconds: 0);
   String timerText = "00:00:00";
 
@@ -42,7 +40,6 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -54,48 +51,54 @@ class _PendingDrinkCardState extends State<PendingDrinkCard> {
             margin: const EdgeInsets.only(top: 30),
             child: Column(
               children: [
-                widget.pendingDrink.drink.flutterIcon  == null ? Icon(Icons.error_outline, size: 60,) : Icon(widget.pendingDrink.drink.flutterIcon!.icon, size: 60,),
+                widget.pendingDrink.drink.flutterIcon == null
+                    ? Icon(
+                        Icons.error_outline,
+                        size: 60,
+                      )
+                    : Icon(
+                        widget.pendingDrink.drink.flutterIcon!.icon,
+                        size: 60,
+                      ),
                 const Spacer(),
                 Text(
                   widget.pendingDrink.drink.name,
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-
                 RichText(
                   text: TextSpan(
-                    text: "Seit:",
-                    style: TextStyle(color: Colors.white70, fontSize: 15),
-                    children: [
-                      TextSpan(text: "${_buildTimerText()}", style: TextStyle(color: Colors.green))
-                    ]
-                  ),
+                      text: "Seit:",
+                      style: TextStyle(color: Colors.white70, fontSize: 15),
+                      children: [
+                        TextSpan(
+                            text: "${_buildTimerText()}",
+                            style: TextStyle(color: Colors.green))
+                      ]),
                 ),
                 const Spacer(),
                 OutlinedButton(
                   style: OutlinedButtonTheme.of(context).style,
                   onPressed: _onCheckPress,
-                  child: const Icon(Icons.check, color: Colors.green,),
-
+                  child: const Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ),
                 )
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
-  void _onCardPress() {
-
-  }
+  void _onCardPress() {}
 
   void _onCheckPress() {
-    PersistenceLayer.finishConsumingDrink(drink: widget.pendingDrink.drink);
+    PersistenceLayer.finishConsumingDrink(pendingDrink: widget.pendingDrink);
   }
-
 
   String _buildTimerText() {
     NumberFormat formatter = NumberFormat("00");
-    return "${formatter.format(timeSinceBegin.inHours%24)}:${formatter.format(timeSinceBegin.inMinutes%60)}:${formatter.format(timeSinceBegin.inSeconds%60)}";
+    return "${formatter.format(timeSinceBegin.inHours % 24)}:${formatter.format(timeSinceBegin.inMinutes % 60)}:${formatter.format(timeSinceBegin.inSeconds % 60)}";
   }
 }
