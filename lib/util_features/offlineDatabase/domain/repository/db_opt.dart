@@ -45,7 +45,7 @@ class DBOptRepo {
   static Future<void> finishConsumingDrink(
       {required PendingDrink pendingDrink}) async {
     print("DB FINISH_CONSUMED");
-    await DBOptService.updateIn(await _db, "consumed", {
+    await DBOptService.updateIn(await _db, "consumed", condition: {
       "drink_id": pendingDrink.drink.id,
       "begin": dateTimeToSQLiteString(pendingDrink.begin)
     }, {
@@ -96,5 +96,19 @@ UPDATE consumed AS c SET end = (SELECT datetime(maxEndUnixTime, 'unixepoch') FRO
         query:
             "SELECT COALESCE(MIN(maxEndUnixTime),0) as time FROM activeDrinks"));
     return result.first["time"];
+  }
+
+  static Future<Map<String, dynamic>> fetchUserAlcCalcDataFromDatabase() async {
+    var userData = (await DBOptService.retrieveFrom(await _db, "users"))[0];
+    return {
+      "decay_rate": userData["decay_rate"],
+      "alc_conversion": userData["alc_conversion"]
+    };
+  }
+
+  static Future<void> updateUserAlcCalcDataInDatabase(
+      {required double decayRate, required double alcConversion}) async {
+    DBOptService.updateIn(await _db, "users",
+        {"decay_rate": decayRate, "alc_conversion": alcConversion});
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:sauf_tracker/util_features/alcohol_calc/repository/alcohol_func.dart';
 import 'package:sauf_tracker/util_features/offlineDatabase/domain/models/pending_drink.dart';
 
 import 'cache/repository/cache.dart';
@@ -23,12 +24,17 @@ class PersistenceLayer {
   static Future<void> startConsumingDrink({required Drink drink}) async {
     await DBOptRepo.addDrinkToConsumed(drink: drink, begin: DateTime.now());
     await Cache.reloadCache(drinks: false, pending: true);
+    AlcoholFunc.registerStartedDrink(
+        millilitres: drink.volume, percentage: drink.percentage);
   }
 
   static Future<void> finishConsumingDrink(
       {required PendingDrink pendingDrink}) async {
     await DBOptRepo.finishConsumingDrink(pendingDrink: pendingDrink);
     await Cache.reloadCache(drinks: false, pending: true);
+    AlcoholFunc.registerStartedDrink(
+        millilitres: pendingDrink.drink.volume,
+        percentage: pendingDrink.drink.percentage);
   }
 
   static Future<void> insertDrink({required Drink drink}) async {
@@ -39,5 +45,9 @@ class PersistenceLayer {
   static Future<List<PendingDrink>> consumedLastTimeInterval(
       int seconds) async {
     return await DBOptRepo.consumedLastTimeInterval(seconds);
+  }
+
+  static Future<Map<String, dynamic>> fetchUserAlcCalcDataFromDatabase() async {
+    return await DBOptRepo.fetchUserAlcCalcDataFromDatabase();
   }
 }

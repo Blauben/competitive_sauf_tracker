@@ -44,8 +44,9 @@ class DBOptService {
             name varchar(30) not null,
             decay_rate float not null,
             alc_conversion float,            
-            points integer,
-            check(user_id >= 0)
+            check(
+            user_id >= 0 and  
+            (SELECT COUNT(*) FROM users) <= 1
             );
             """,
       """CREATE VIEW scoreboard AS
@@ -98,12 +99,12 @@ class DBOptService {
     }
   }
 
-  static Future<void> updateIn(Database db, String table,
-      Map<String, dynamic> condition, Map<String, dynamic> updatedValues,
-      {List<String>? conditionComp}) async {
+  static Future<void> updateIn(
+      Database db, String table, Map<String, dynamic> updatedValues,
+      {Map<String, dynamic>? condition, List<String>? conditionComp}) async {
     await db.update(table, updatedValues,
-        where: _buildWhereCondition(condition.keys, compOp: conditionComp),
-        whereArgs: condition.values.toList());
+        where: _buildWhereCondition(condition?.keys, compOp: conditionComp),
+        whereArgs: condition?.values.toList());
   }
 
   static Future<List<Map<String, dynamic>>> retrieveFrom(
@@ -130,8 +131,11 @@ class DBOptService {
     }
   }
 
-  static String? _buildWhereCondition(Iterable<String> keys,
+  static String? _buildWhereCondition(Iterable<String>? keys,
       {List<String>? compOp}) {
+    if (keys == null) {
+      return null;
+    }
     compOp ??= ["="];
     String where = "";
     for (int i = 0; i < keys.length; i++) {
